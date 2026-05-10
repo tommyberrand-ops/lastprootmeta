@@ -179,7 +179,6 @@ class PromptGenerator {
         if (!document.getElementById('enableMirrorMode')?.checked) return '';
         const t = { classique:'identique', tenue_inversee:'couleurs inversées', regard_different:'regard intense' }[document.getElementById('mirrorType')?.value] || 'identique';
         const d = { synchronise:'synchro', miroir:'miroir', complementaire:'complémentaire', sensuel:'sensuel' }[document.getElementById('mirrorDuoStyle')?.value] || 'synchro';
-        const p = document.getElementById('mirrorPoseFinale')?.value || 'cote_a_cote';
         return `\n🪞 MIROIR: clone ${t} - danse ${d}`;
     }
 
@@ -277,7 +276,7 @@ class PromptGenerator {
     }
 
     generatePart2() {
-        const c = countries[this.userData.country];
+        const country = countries[this.userData.country];
         const sed = this.getSeductionPhrase(this.userData.seductionLevel);
         const fluoInt = this.userData.fluoIntensity >= 8 ? 'éclatant' : this.userData.fluoIntensity >= 5 ? 'brillant' : 'léger';
         const isSelfie = this.userData.selfieMode.enabled;
@@ -324,10 +323,12 @@ class PromptGenerator {
         const effects = this.generateEffects();
         const dialogue = this.generateDialogue();
         
-        // TENUE FINALE COMPLÈTE (sans troncature)
+        // ==============================================================
+        // TENUE FINALE COMPLÈTE (sans troncature) - CORRIGÉE
+        // ==============================================================
         let outfit = '';
-        if (c && c.finalOutfit && c.finalOutfit.colors) {
-            outfit = `${c.finalOutfit.description} - Couleurs: ${c.finalOutfit.colors.join(', ')} - Éléments: ${c.finalOutfit.elements.join(', ')} - Accessoires: ${c.finalOutfit.accessories.join(', ')}`;
+        if (country && country.finalOutfit && country.finalOutfit.colors) {
+            outfit = `${country.finalOutfit.description} - Couleurs: ${country.finalOutfit.colors.join(', ')} - Éléments: ${country.finalOutfit.elements.join(', ')} - Accessoires: ${country.finalOutfit.accessories.join(', ')}`;
         } else if (this.userData.country === 'rapper' && countries.rapper?.tenues) {
             const t = countries.rapper.tenues[this.userData.rapperStyle];
             if (t) outfit = `${t.description} - Couleurs: ${t.colors.join(', ')} - Éléments: ${t.elements.join(', ')} - Accessoires: ${t.accessories.join(', ')}`;
@@ -340,7 +341,7 @@ class PromptGenerator {
         
         const hair = this.userData.enableFluo ? `Cheveux: ${this.userData.fluoColor} ${fluoInt}, ${this.userData.hairStyle}` : `Cheveux: ${this.userData.naturalHair}`;
         
-        return `PART2 (6-12s): Suite, même visage. ${hair}. Tenue: ${outfit}. Danse ${c.dance}: ${dm}. Action: ${action}.${g}${float} Décor: ${decor}.${alien}${avatar}${animal}${animalBaby}${mirror}${fantasy}${special}${effects}${dialogue} FINALE: ${finale} puis ${finalOpt}. ${interaction}.`;
+        return `PART2 (6-12s): Suite, même visage. ${hair}. Tenue: ${outfit}. Danse ${country.dance}: ${dm}. Action: ${action}.${g}${float} Décor: ${decor}.${alien}${avatar}${animal}${animalBaby}${mirror}${fantasy}${special}${effects}${dialogue} FINALE: ${finale} puis ${finalOpt}. ${interaction}.`;
     }
 
     generateConsignes() {
@@ -357,7 +358,7 @@ class PromptGenerator {
     }
 }
 
-// ========== INITIALISATION (inchangée) ==========
+// ========== INITIALISATION ==========
 function initCharacters() {
     const grid = document.getElementById('countryGrid');
     if (!grid) return;
