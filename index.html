@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROMPT DANCE STUDIO</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <h1><i class="fas fa-robot"></i> PROMPT DANCE STUDIO</h1>
+            <div class="version">v6.0 ULTIME - 72 personnages - Tous les effets - Visage 8K</div>
+        </header>
+
+        <div class="main-content">
+            <!-- COLONNE GAUCHE - PARAMÈTRES -->
+            <div class="left-col">
+                <!-- SECTION PERSONNAGES -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-user-tag"></i>
+                        <h3>PERSONNAGES</h3>
+                        <span class="badge">72</span>
+                    </div>
+                    <div class="card-body">
+                        <input type="text" id="characterSearch" placeholder="Rechercher..." class="search-input">
+                        <div class="characters-grid" id="countryGrid"></div>
+                        <div class="selected-info" id="selectedCountry">
+                            Sélectionné: <span>Aucun</span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+ 
+
+
+
+                <!-- SECTION TENUE FINALE -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-crown"></i>
+                        <h3>TENUE FINALE</h3>
+                    </div>
+                    <div class="card-body">
+                        <textarea id="finalOutfitDescription" rows="4" placeholder="Description de la tenue finale..."></textarea>
+                        <button class="btn primary" id="generateOutfit">
+                            <i class="fas fa-wand-magic"></i> Générer tenue
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SECTION CHEVEUX FLUO -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-magic"></i>
+                        <h3>CHEVEUX FLUO</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="toggle-container">
+                            <label class="switch">
+                                <input type="checkbox" id="enableFluo" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <span class="switch-label">Activer cheveux fluo</span>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Couleur naturelle</label>
+                            <input type="text" id="naturalHair" value="bruns/noirs" class="full-width">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Couleur fluo</label>
+                            <select id="fluoColor" class="full-width">
+                                <option value="rouge fluo">🔴 ROUGE FLUO</option>
+                                <option value="rose fluo">🌸 ROSE FLUO</option>
+                                <option value="bleu électrique">💙 BLEU ÉLECTRIQUE</option>
+                                <option value="vert fluo">💚 VERT FLUO</option>
+                                <option value="jaune fluo">💛 JAUNE FLUO</option>
+                                <option value="violet fluo">💜 VIOLET FLUO</option>
+                                <option value="orange fluo">🧡 ORANGE FLUO</option>
+                                <option value="argent métallique">✨ ARGENT</option>
+                                <option value="or cosmique">🌟 OR COSMIQUE</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Intensité fluo <span id="intensityValue">Éclatant</span></label>
+                            <input type="range" id="fluoIntensity" min="1" max="10" value="9" class="slider-input">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Style de coiffure</label>
+                            <select id="hairStyle" class="full-width">
+                                <option value="détachés">Longs et détachés</option>
+                                <option value="chignon">Chignon élaboré</option>
+                                <option value="tresses">Tresses / Nattes</option>
+                                <option value="attachés">Attachés avec mèches</option>
+                                <option value="bouclés">Bouclés volumineux</option>
+                                <option value="alien">Coiffure extraterrestre</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION TEXTES MAGIQUES FLOTTANTS -->
+                <div class="card" style="border: 2px solid #9b59b6; background: linear-gradient(135deg, rgba(155,89,182,0.1), rgba(52,152,219,0.1));">
+                    <div class="card-header">
+                        <i class="fas fa-magic"></i>
+                        <h3>TEXTES MAGIQUES FLOTTANTS</h3>
+                        <span class="badge" style="background: #9b59b6;">EFFETS</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="toggle-container">
+                            <label class="switch">
+                                <input type="checkbox" id="enableMagicTexts">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="switch-label">Activer les textes magiques</span>
+                        </div>
+                        
+                        <div id="magicTextsOptions" style="margin-top: 15px; display: none;">
+                            
+<!-- SÉLECTION DES TEXTES -->
+<div class="input-group">
+    <label>TEXTES À AFFICHER</label>
+    <div class="checkbox-grid" style="grid-template-columns: repeat(2,1fr);">
+        <label class="checkbox-label"><input type="checkbox" id="textFollow" checked> "Follow Me"</label>
+        <label class="checkbox-label"><input type="checkbox" id="textLike" checked> "Like Me"</label>
+        <label class="checkbox-label"><input type="checkbox" id="textLuna"> "@luna_wells"</label>
+        <label class="checkbox-label"><input type="checkbox" id="textSubscribe"> "Subscribe"</label>
+        <label class="checkbox-label"><input type="checkbox" id="textLove"> "Love Me"</label>
+        <label class="checkbox-label"><input type="checkbox" id="textWatch"> "Watch Me"</label>
+        <label class="checkbox-label"><input type="checkbox" id="textHeart"> "❤️" (cœurs)</label>
+        <label class="checkbox-label"><input type="checkbox" id="textStar"> "✨" (étoiles)</label>
+    </div>
+</div>
+                            
+                            <!-- EFFETS VISUELS -->
+                            <div class="input-group">
+                                <label>✨ EFFET VISUEL</label>
+                                <select id="textEffect" class="full-width">
+                                    <option value="neon">🔮 Néon lumineux</option>
+                                    <option value="glow">🌟 Lueur magique</option>
+                                    <option value="fire">🔥 Enflammé</option>
+                                    <option value="ice">❄️ Glacé / Cristal</option>
+                                    <option value="rainbow">🌈 Arc-en-ciel</option>
+                                    <option value="gold">👑 Doré étincelant</option>
+                                    <option value="silver">💎 Argenté</option>
+                                    <option value="hologram">🌀 Holographique</option>
+                                </select>
+                            </div>
+                            
+                            <!-- MOUVEMENT -->
+                            <div class="input-group">
+                                <label>🌀 MOUVEMENT</label>
+                                <select id="textMovement" class="full-width">
+                                    <option value="float">🎈 Flottant (léger)</option>
+                                    <option value="spin">🔄 Rotation lente</option>
+                                    <option value="orbit">🌍 Orbite autour d'elle</option>
+                                    <option value="bounce">🤸 Rebondissant</option>
+                                    <option value="wave">🌊 Vagues</option>
+                                    <option value="follow">👁️ Suivent son regard</option>
+                                    <option value="random">🎲 Aléatoire</option>
+                                </select>
+                            </div>
+                            
+                            <!-- COULEUR PRINCIPALE -->
+                            <div class="color-row">
+                                <div class="color-item">
+                                    <label>🎨 COULEUR</label>
+                                    <input type="color" id="textColor" value="#ff6b6b">
+                                </div>
+                                <div class="color-item">
+                                    <label>💎 COULEUR SECONDAIRE</label>
+                                    <input type="color" id="textColor2" value="#4ecdc4">
+                                </div>
+                            </div>
+                            
+                            <!-- TAILLE ET QUANTITÉ -->
+                            <div class="color-row">
+                                <div class="color-item">
+                                    <label>📏 TAILLE</label>
+                                    <select id="textSize" class="full-width">
+                                        <option value="small">Petit</option>
+                                        <option value="medium" selected>Moyen</option>
+                                        <option value="large">Grand</option>
+                                        <option value="xlarge">Très grand</option>
+                                    </select>
+                                </div>
+                                <div class="color-item">
+                                    <label>🔢 QUANTITÉ</label>
+                                    <select id="textQuantity" class="full-width">
+                                        <option value="few">Peu (2-3)</option>
+                                        <option value="medium" selected>Moyen (4-6)</option>
+                                        <option value="many">Beaucoup (7-10)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- POSITION ET TIMING -->
+                            <div class="color-row">
+                                <div class="color-item">
+                                    <label>📍 POSITION</label>
+                                    <select id="textPosition" class="full-width">
+                                        <option value="all">Partout</option>
+                                        <option value="around">Autour d'elle</option>
+                                        <option value="above">Au-dessus</option>
+                                        <option value="behind">En arrière-plan</option>
+                                    </select>
+                                </div>
+                                <div class="color-item">
+                                    <label>⏱️ MOMENT</label>
+                                    <select id="textTiming" class="full-width">
+                                        <option value="whole">Toute la vidéo</option>
+                                        <option value="part2">Partie 2 seulement</option>
+                                        <option value="transition">À la transition</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- EFFETS SPÉCIAUX -->
+                            <div class="input-group">
+                                <label>⚡ EFFETS SPÉCIAUX</label>
+                                <div class="checkbox-grid" style="grid-template-columns: repeat(2,1fr);">
+                                    <label class="checkbox-label"><input type="checkbox" id="effectSparkle" checked> ✨ Scintillement</label>
+                                    <label class="checkbox-label"><input type="checkbox" id="effectPulse"> 💓 Pulsation</label>
+                                    <label class="checkbox-label"><input type="checkbox" id="effectFade"> 🌫️ Apparition/disparition</label>
+                                    <label class="checkbox-label"><input type="checkbox" id="effectTrail"> 🌠 Traînée lumineuse</label>
+                                    <label class="checkbox-label"><input type="checkbox" id="effectShadow"> 👤 Ombre portée</label>
+                                    <label class="checkbox-label"><input type="checkbox" id="effect3d" checked> 🎲 Effet 3D</label>
+                                </div>
+                            </div>
+                            
+                            <!-- APERÇU DU RENDU -->
+                            <div class="info-note" style="margin-top: 15px; padding: 15px; background: rgba(155,89,182,0.2); border-radius: 10px; text-align: center;">
+                                <i class="fas fa-eye"></i> 
+                                <span style="display: block; margin-top: 10px; font-size: 1.2em; text-shadow: 0 0 10px #9b59b6;">
+                                    "Follow Me" • "Like Me" • "❤️"
+                                </span>
+                                <small style="display: block; margin-top: 10px;">Les textes flottent autour d'elle avec des effets magiques !</small>
+                            </div>
+                            
+                            <!-- TEXTE PERSONNALISÉ -->
+                            <div class="input-group" style="margin-top: 15px;">
+                                <label>✏️ TEXTE PERSONNALISÉ (optionnel)</label>
+                                <input type="text" id="customText" placeholder="Ex: Mon propre texte..." class="full-width">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+             
+
+<!-- 🎬 SECTION FINALE SPECTACULAIRE OPTIMISÉE -->
+<div class="card" style="border: 3px solid #ffd700; background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.15));">
+    <div class="card-header">
+        <i class="fas fa-star"></i>
+        <h3>🎬 FINALE SPECTACULAIRE</h3>
+        <span class="badge" style="background: #ffd700; color: black;">OPTIMISÉ</span>
+    </div>
+    <div class="card-body">
+        
+        <!-- ACTIVATION DE LA FINALE -->
+        <div class="toggle-container">
+            <label class="switch">
+                <input type="checkbox" id="enableFinale" checked>
+                <span class="slider"></span>
+            </label>
+            <span class="switch-label">🎬 Activer la finale spectaculaire</span>
+        </div>
+        
+        <div id="finaleOptions" style="margin-top: 15px;">
+            
+            <!-- CHOIX DU GESTE FINAL (1 SEUL, PRÉCIS) -->
+            <div class="input-group">
+                <label style="color: #ffd700;">💋 GESTE FINAL (dernière seconde)</label>
+                <select id="finaleType" class="full-width" style="border-color: #ffd700;">
+                    <option value="bisou">💋 Bisou langoureux - doigts sur les lèvres, baiser envoyé</option>
+                    <option value="coeur">💖 Cœur avec les mains - forme un cœur, le porte à sa poitrine</option>
+                    <option value="clin">😉 Clin d'œil appuyé - slow blink sensuel</option>
+                    <option value="cascade">💋 Cascade de bisous - 3 bisous rapides + 1 lent</option>
+                    <option value="revelation">✨ Révélation - bras écartés, offre son corps</option>
+                    <option value="viens">👉 Dernier geste "viens" - index qui invite</option>
+                    <option value="freeze">📸 Freeze frame - corps figé, visage vivant</option>
+                    <option value="souffle">💨 Souffle sensuel - baiser soufflé</option>
+                    <option value="epaule">🔥 Découverte épaule - tissu qui glisse</option>
+                </select>
+            </div>
+            
+            <!-- OPTIONS DE FIN DE VIDÉO -->
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
+                <div style="flex: 1;">
+                    <label style="color: #ffd700;">🎞️ FIN DE LA VIDÉO :</label>
+                    <select id="finalOption" class="full-width" style="border-color: #ffd700;">
+                        <option value="freeze">📸 Freeze frame (image figée)</option>
+                        <option value="fondu">🌫️ Fondu au noir</option>
+                        <option value="fonduBlanc">✨ Fondu au blanc</option>
+                        <option value="zoom">🔍 Zoom sur son visage</option>
+                        <option value="flou">🌀 Flou artistique</option>
+                    </select>
+                </div>
+                
+                <div style="flex: 1;">
+                    <label style="color: #ffd700;">⏱️ TEMPS DE MAINTIEN :</label>
+                    <select id="finalMaintien" class="full-width" style="border-color: #ffd700;">
+                        <option value="1">1 seconde</option>
+                        <option value="2" selected>2 secondes</option>
+                        <option value="3">3 secondes</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <label style="color: #ffd700;">😊 ÉMOTION FINALE :</label>
+                <select id="finalEmotion" class="full-width" style="border-color: #ffd700;">
+                    <option value="satisfaite">😌 Satisfaite</option>
+                    <option value="coquine">😏 Coquine</option>
+                    <option value="intense">🔥 Intense</option>
+                    <option value="victorieuse">👑 Victorieuse</option>
+                    <option value="mysterieuse">🖤 Mystérieuse</option>
+                </select>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <label style="color: #ffd700;">👁️ INTERACTION PUBLIC :</label>
+                <select id="finalInteraction" class="full-width" style="border-color: #ffd700;">
+                    <option value="regard">Regard dans les yeux</option>
+                    <option value="sourire">Sourire éclatant</option>
+                    <option value="clin">Clin d'œil complice</option>
+                    <option value="main">Main tendue</option>
+                    <option value="tous">Alternance des trois</option>
+                </select>
+            </div>
+            
+            <div class="info-note" style="margin-top: 15px; background: rgba(255,215,0,0.2);">
+                <i class="fas fa-info-circle"></i> 
+                <strong>FINALE PRÉCISE :</strong> Le geste choisi s'exécute À LA SECONDE 5 EXACTEMENT. La vidéo dure 5.9 secondes. Tu peux désactiver la finale si tu ne veux pas de geste spécial.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+                <!-- SECTION SÉDUCTION -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-heart"></i>
+                        <h3>SÉDUCTION</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <label>Intensité <span id="seductionValue">9/10</span></label>
+                            <input type="range" id="seductionLevel" min="1" max="10" value="9" class="slider-input">
+                        </div>
+                        
+                        <div class="checkbox-grid">
+                            <label class="checkbox-label"><input type="checkbox" id="gesteRegards" checked> Regards charmeurs</label>
+                            <label class="checkbox-label"><input type="checkbox" id="gesteSourires" checked> Sourires coquins</label>
+                            <label class="checkbox-label"><input type="checkbox" id="gesteClins" checked> Clins d'œil</label>
+                            <label class="checkbox-label"><input type="checkbox" id="gesteLevres" checked> Lèvre mordue</label>
+                            <label class="checkbox-label"><input type="checkbox" id="gesteMains" checked> Mains caressantes</label>
+                            <label class="checkbox-label"><input type="checkbox" id="gesteCheveux" checked> Jeux cheveux</label>
+                            <label class="checkbox-label"><input type="checkbox" id="gesteBisous" checked> Envoyer des bisous</label>
+                            <label class="checkbox-label"><input type="checkbox" id="gesteViens" checked> Geste "viens vers moi"</label>
+                        </div>
+                        
+                        <div class="number-group">
+                            <div class="number-item">
+                                <label>Nombre de bisous</label>
+                                <input type="number" id="bisousCount" value="3" min="1" max="10">
+                            </div>
+                            <div class="number-item">
+                                <label>Nombre de gestes "viens"</label>
+                                <input type="number" id="viensCount" value="4" min="1" max="10">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION EFFETS SPÉCIAUX -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-fire"></i>
+                        <h3>EFFETS SPÉCIAUX</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="checkbox-grid">
+                            <label class="checkbox-label"><input type="checkbox" id="effectFeu"> 🔥 Flammes</label>
+                            <label class="checkbox-label"><input type="checkbox" id="effectEau"> 💧 Eau / Vagues</label>
+                            <label class="checkbox-label"><input type="checkbox" id="effectGlace"> ❄️ Glace / Cristaux</label>
+                            <label class="checkbox-label"><input type="checkbox" id="effectEclairs"> ⚡ Éclairs</label>
+                            <label class="checkbox-label"><input type="checkbox" id="effectPapillons"> 🦋 Papillons</label>
+                            <label class="checkbox-label"><input type="checkbox" id="effectPlumes"> 🪶 Plumes</label>
+                            <label class="checkbox-label"><input type="checkbox" id="effectLaser"> 💫 Lasers</label>
+                            <label class="checkbox-label"><input type="checkbox" id="effectBulles"> 🫧 Bulles</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION MODE ALIEN (TABLEAU COMPLET AVEC TOUS LES CHOIX) -->
+                <div class="card alien-card">
+                    <div class="card-header">
+                        <i class="fas fa-robot"></i>
+                        <h3>MODE ALIEN</h3>
+                        <span class="badge">CHOIX INDIVIDUELS</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="toggle-container">
+                            <label class="switch">
+                                <input type="checkbox" id="enableAlienMode">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="switch-label">Activer mode extraterrestre</span>
+                        </div>
+                        
+                        <div id="alienOptions" style="margin-top: 15px; display: none;">
+                            <!-- PREMIÈRE LIGNE DE CASES -->
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label"><input type="checkbox" id="alienSkin"> 👽 Peau irisée</label>
+                                <label class="checkbox-label"><input type="checkbox" id="alienEyes"> 👁️ Yeux lumineux</label>
+                                <label class="checkbox-label"><input type="checkbox" id="alienAntenna"> 📡 Antennes</label>
+                                <label class="checkbox-label"><input type="checkbox" id="alienGlow"> ✨ Phosphorescent</label>
+                            </div>
+                            
+                            <!-- DEUXIÈME LIGNE DE CASES -->
+                            <div class="checkbox-grid" style="margin-top: 10px;">
+                                <label class="checkbox-label"><input type="checkbox" id="alienTattoos"> 🌀 Tatouages</label>
+                                <label class="checkbox-label"><input type="checkbox" id="alienHolograms"> 💫 Hologrammes</label>
+                                <label class="checkbox-label"><input type="checkbox" id="alienVoice"> 🎤 Voix modulée</label>
+                                <label class="checkbox-label"><input type="checkbox" id="alienGravity"> 🌠 Apesanteur</label>
+                                <label class="checkbox-label"><input type="checkbox" id="alienTeleportation"> ⚡ Téléportation</label>
+                            </div>
+                            
+                            <!-- OPTIONS DE COULEUR POUR PEAU -->
+                            <div id="alienSkinOptions" style="margin-top: 15px; display: none; padding: 10px; background: rgba(0,255,0,0.1); border-radius: 8px;">
+                                <div class="input-group">
+                                    <label style="color: #00ff00;">🎨 Couleur de peau</label>
+                                    <select id="alienSkinColor" class="full-width">
+                                        <option value="argent">Argent métallique</option>
+                                        <option value="or">Or cosmique</option>
+                                        <option value="bleu">Bleu holographique</option>
+                                        <option value="violet">Violet galactique</option>
+                                        <option value="rose">Rose nébuleuse</option>
+                                        <option value="cyan">Cyan extraterrestre</option>
+                                        <option value="vert">Vert néon</option>
+                                        <option value="rouge">Rouge martien</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- OPTIONS DE COULEUR POUR YEUX -->
+                            <div id="alienEyesOptions" style="margin-top: 15px; display: none; padding: 10px; background: rgba(255,0,0,0.1); border-radius: 8px;">
+                                <div class="input-group">
+                                    <label style="color: #ff0000;">👁️ Couleur des yeux</label>
+                                    <select id="alienEyesColor" class="full-width">
+                                        <option value="rouge">Rouge sang</option>
+                                        <option value="bleu">Bleu électrique</option>
+                                        <option value="vert">Vert fluorescent</option>
+                                        <option value="violet">Violet profond</option>
+                                        <option value="jaune">Jaune soufre</option>
+                                        <option value="blanc">Blanc lumineux</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- OPTIONS POUR ANTENNES -->
+                            <div id="alienAntennaOptions" style="margin-top: 15px; display: none; padding: 10px; background: rgba(255,255,0,0.1); border-radius: 8px;">
+                                <div class="input-group">
+                                    <label style="color: #ffff00;">📡 Style d'antennes</label>
+                                    <select id="antennaStyle" class="full-width">
+                                        <option value="antennes">Antennes fines (insectoïdes)</option>
+                                        <option value="cornes">Cornes stylisées (démoniaques)</option>
+                                        <option value="couronne">Couronne lumineuse (angélique)</option>
+                                        <option value="halo">Halo de lumière (surnaturel)</option>
+                                        <option value="tentacules">Tentacules (cthulhu)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- OPTIONS POUR LUEUR -->
+                            <div id="alienGlowOptions" style="margin-top: 15px; display: none; padding: 10px; background: rgba(0,255,255,0.1); border-radius: 8px;">
+                                <div class="input-group">
+                                    <label style="color: #00ffff;">✨ Couleur de lueur</label>
+                                    <select id="glowColor" class="full-width">
+                                        <option value="bleu">Bleu</option>
+                                        <option value="vert">Vert</option>
+                                        <option value="rose">Rose</option>
+                                        <option value="violet">Violet</option>
+                                        <option value="or">Or</option>
+                                        <option value="blanc">Blanc</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- OPTIONS POUR TATOUAGES -->
+                            <div id="alienTattoosOptions" style="margin-top: 15px; display: none; padding: 10px; background: rgba(128,0,128,0.1); border-radius: 8px;">
+                                <div class="input-group">
+                                    <label style="color: #ff00ff;">🌀 Style de tatouages</label>
+                                    <select id="tattooStyle" class="full-width">
+                                        <option value="symboles">Symboles aliens</option>
+                                        <option value="runes">Runes anciennes</option>
+                                        <option value="galaxie">Motifs galactiques</option>
+                                        <option value="circuits">Circuits imprimés</option>
+                                        <option value="geometriques">Formes géométriques</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- OPTIONS POUR HOLOGRAMMES -->
+                            <div id="alienHologramsOptions" style="margin-top: 15px; display: none; padding: 10px; background: rgba(255,165,0,0.1); border-radius: 8px;">
+                                <div class="input-group">
+                                    <label style="color: #ffa500;">💫 Type d'hologrammes</label>
+                                    <select id="hologramType" class="full-width">
+                                        <option value="etoiles">Étoiles filantes</option>
+                                        <option value="planetes">Planètes miniatures</option>
+                                        <option value="symboles">Symboles mystiques</option>
+                                        <option value="energie">Sphères d'énergie</option>
+                                        <option value="animaux">Créatures holographiques</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="info-note" style="margin-top: 15px;">
+                                <i class="fas fa-info-circle"></i> 
+                                <small>Coche les options que tu souhaites. Chaque option peut être activée indépendamment.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION MODE AVATAR (AVEC CHOIX GARDER VISAGE) -->
+                <div class="card avatar-card">
+                    <div class="card-header">
+                        <i class="fas fa-leaf"></i>
+                        <h3>MODE AVATAR</h3>
+                        <span class="badge">NA'VI</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="toggle-container">
+                            <label class="switch">
+                                <input type="checkbox" id="enableAvatarMode">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="switch-label">Activer mode Avatar (Na'vi)</span>
+                        </div>
+                        
+                        <div id="avatarOptions" style="margin-top: 15px; display: none;">
+                            <!-- OPTION SPÉCIALE POUR GARDER LE VISAGE -->
+                            <div class="checkbox-grid" style="grid-template-columns: 1fr; background: rgba(0,255,255,0.2); padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                                <label class="checkbox-label" style="color: #00ffff; font-weight: bold;">
+                                    <input type="checkbox" id="avatarKeepFace"> 👤 GARDER MON VISAGE HUMAIN (le visage reste identique à l'image)
+                                </label>
+                            </div>
+                            
+                            <div class="info-note" style="margin-bottom: 15px; background: rgba(0,255,255,0.1);">
+                                <i class="fas fa-info-circle"></i> 
+                                <small>Si cette case est cochée, SEUL le corps devient Na'vi, le visage reste strictement identique à l'image de référence.</small>
+                            </div>
+                            
+                            <!-- OPTIONS PHYSIQUES AVATAR -->
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label"><input type="checkbox" id="avatarFullBody" checked> 🔵 Corps Na'vi complet (peau bleue)</label>
+                                <label class="checkbox-label"><input type="checkbox" id="avatarEars"> 👂 Oreilles pointues</label>
+                                <label class="checkbox-label"><input type="checkbox" id="avatarTail"> 🐒 Queue</label>
+                                <label class="checkbox-label"><input type="checkbox" id="avatarStripes"> ✨ Rayures lumineuses</label>
+                                <label class="checkbox-label"><input type="checkbox" id="avatarBioluminescence"> 💡 Points bioluminescents</label>
+                                <label class="checkbox-label"><input type="checkbox" id="avatarTattoos"> 🎨 Peintures tribales</label>
+                            </div>
+                            
+                            <!-- OPTIONS DE COULEUR DE PEAU AVATAR -->
+                            <div style="margin-top: 15px; padding: 10px; background: rgba(0,0,255,0.2); border-radius: 8px;">
+                                <div class="input-group">
+                                    <label style="color: #0088ff;">🎨 Nuance de peau Na'vi</label>
+                                    <select id="avatarSkinTone" class="full-width">
+                                        <option value="bleu nuit">Bleu nuit (classique)</option>
+                                        <option value="turquoise">Turquoise</option>
+                                        <option value="cyan">Cyan</option>
+                                        <option value="bleu glacier">Bleu glacier</option>
+                                        <option value="violet bleuté">Violet bleuté</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- OPTIONS POUR LA QUEUE -->
+                            <div id="avatarTailOptions" style="margin-top: 15px; display: none; padding: 10px; background: rgba(255,255,0,0.1); border-radius: 8px;">
+                                <div class="input-group">
+                                    <label style="color: #ffff00;">🐒 Style de queue</label>
+                                    <select id="avatarTailStyle" class="full-width">
+                                        <option value="fine">Fine et expressive</option>
+                                        <option value="longue">Longue et préhensile</option>
+                                        <option value="courte">Courte et touffue</option>
+                                        <option value="rayures">Avec rayures</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- OPTIONS POUR LES RAYURES -->
+                            <div id="avatarStripesOptions" style="margin-top: 15px; display: none; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                                <div class="input-group">
+                                    <label style="color: #ffffff;">✨ Style de rayures</label>
+                                    <select id="avatarStripesStyle" class="full-width">
+                                        <option value="fines">Fines rayures horizontales</option>
+                                        <option value="epaisses">Rayures épaisses</option>
+                                        <option value="spirales">Motifs en spirale</option>
+                                        <option value="tribales">Motifs tribaux</option>
+                                    </select>
+                                </div>
+                                <div class="input-group" style="margin-top: 10px;">
+                                    <label style="color: #ffffff;">🎨 Couleur des rayures</label>
+                                    <select id="avatarStripesColor" class="full-width">
+                                        <option value="blanc">Blanc</option>
+                                        <option value="argent">Argent</option>
+                                        <option value="or">Or</option>
+                                        <option value="turquoise">Turquoise</option>
+                                        <option value="violet">Violet</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+<!-- 🐶 SECTION MODE BÉBÉ ANIMAL CÂLIN 🐱 -->
+<div class="card" style="border: 2px solid #ff99cc; background: linear-gradient(135deg, rgba(255,153,204,0.15), rgba(255,105,180,0.15));">
+    <div class="card-header">
+        <i class="fas fa-heart" style="color: #ff99cc;"></i>
+        <h3>🐶 MODE BÉBÉ ANIMAL CÂLIN</h3>
+        <span class="badge" style="background: #ff99cc;">TENDRESSE</span>
+    </div>
+    <div class="card-body">
+        <div class="toggle-container">
+            <label class="switch">
+                <input type="checkbox" id="enableAnimalBabyMode">
+                <span class="slider"></span>
+            </label>
+            <span class="switch-label">Activer mode câlin avec bébé animal</span>
+        </div>
+        
+        <div id="animalBabyOptions" style="margin-top: 15px; display: none;">
+            <!-- TYPE D'ANIMAL -->
+            <div class="input-group">
+                <label>🐾 TYPE D'ANIMAL</label>
+                <select id="animalBabyType" class="full-width">
+                    <option value="chiot">🐶 Chiot (bébé chien)</option>
+                    <option value="chaton">🐱 Chaton (bébé chat)</option>
+                </select>
+            </div>
+            
+            <!-- INTENSITÉ -->
+            <div class="input-group">
+                <label>💕 INTENSITÉ DES INTERACTIONS</label>
+                <select id="animalBabyIntensity" class="full-width">
+                    <option value="tendre">💗 Tendre (priorité aux câlins)</option>
+                    <option value="joueur">🎾 Joueur (priorité aux jeux)</option>
+                    <option value="mixte">💞 Mixte (équilibré)</option>
+                </select>
+            </div>
+            
+            <!-- POSITIONS -->
+            <div class="input-group">
+                <label>📸 POSITIONS</label>
+                <select id="animalBabyPositions" class="full-width">
+                    <option value="variees">🔄 Variées (naturelles)</option>
+                    <option value="fixe">🎯 Fixe (face caméra)</option>
+                    <option value="dynamiques">💫 Dynamiques (changeantes)</option>
+                </select>
+            </div>
+            
+            <!-- INFO IMPORTANTE -->
+            <div class="info-note" style="margin-top: 15px; background: rgba(255,153,204,0.2); border-left-color: #ff99cc;">
+                <i class="fas fa-info-circle"></i> 
+                <strong>⚠️ INSTRUCTION PRIORITAIRE :</strong>
+                <ul style="margin-top: 8px; margin-left: 20px;">
+                    <li>L'image de l'animal sera INTÉGRÉE PHYSIQUEMENT</li>
+                    <li>Elle le tient au niveau des seins, FACE CAMÉRA</li>
+                    <li>Danse PLUS DOUCE pour ne pas le brusquer</li>
+                    <li>Alternance regards TENDRES (animal) / SÉDUCTEURS (caméra)</li>
+                    <li>Câlins, bisous, jeux ULTRA-RÉALISTES</li>
+                    <li>Le plan moyen est MAINTENU tout le long</li>
+                </ul>
+            </div>
+            
+            <!-- APERÇU VISUEL -->
+            <div style="margin-top: 15px; padding: 15px; background: rgba(255,153,204,0.1); border-radius: 10px; text-align: center;">
+                <i class="fas fa-camera" style="font-size: 2em; color: #ff99cc;"></i>
+                <p style="margin-top: 10px;"><strong>PLAN MOYEN RAPPROCHÉ</strong></p>
+                <p style="font-size: 0.9em;">Elle tient l'animal au niveau des seins, face caméra, les deux regardent le spectateur. Câlins, bisous, jeux - CONNEXION TOTALE.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 🪞 SECTION MODE MIROIR - TRANSITIONS RÉALISTES 🪞 -->
+<div class="card" style="border: 2px solid #c0c0c0; background: linear-gradient(135deg, rgba(192,192,192,0.15), rgba(255,255,255,0.15));">
+    <div class="card-header">
+        <i class="fas fa-regular fa-clone" style="color: #c0c0c0;"></i>
+        <h3>🪞 MODE MIROIR (DOUBLE SENSUEL)</h3>
+        <span class="badge" style="background: #c0c0c0;">BUZZ</span>
+    </div>
+    <div class="card-body">
+        <div class="toggle-container">
+            <label class="switch">
+                <input type="checkbox" id="enableMirrorMode">
+                <span class="slider"></span>
+            </label>
+            <span class="switch-label">Activer mode miroir - double sortant du miroir</span>
+        </div>
+        
+        <div id="mirrorOptions" style="margin-top: 15px; display: none;">
+            
+            <!-- TYPE DE CLONE -->
+            <div class="input-group">
+                <label>🎭 TYPE DE CLONE</label>
+                <select id="mirrorType" class="full-width">
+                    <option value="classique">🪞 Identique (strictement pareil)</option>
+                    <option value="tenue_inversee">🔄 Couleurs inversées (négatif élégant)</option>
+                    <option value="regard_different">👁️ Regard différent (plus intense)</option>
+                </select>
+            </div>
+            
+            <!-- TYPE DE TRANSITION RÉALISTE -->
+            <div class="input-group">
+                <label>🤝 TRANSITION RÉALISTE</label>
+                <select id="mirrorTransition" class="full-width">
+                    <option value="main_tendue">🤝 Main tendue (elle tire son clone)</option>
+                    <option value="contournement">🚶 Contournement (elle contourne le miroir)</option>
+                    <option value="derriere">👋 Le clone sort par derrière</option>
+                    <option value="danse_progressive">💃 Danse progressive (le clone prend vie)</option>
+                </select>
+            </div>
+            
+            <!-- STYLE DE DANSE À DEUX -->
+            <div class="input-group">
+                <label>💃 STYLE DE DANSE À DEUX</label>
+                <select id="mirrorDuoStyle" class="full-width">
+                    <option value="synchronise">🔄 Synchronisé (mêmes mouvements)</option>
+                    <option value="miroir">🪞 En miroir (l'une inverse de l'autre)</option>
+                    <option value="complementaire">💞 Complémentaire (mouvements différents)</option>
+                    <option value="sensuel">🔥 Sensuel (caresses, regards)</option>
+                </select>
+            </div>
+            
+            <!-- POSE FINALE FACE CAMÉRA -->
+            <div class="input-group">
+                <label>📸 POSE FINALE FACE CAMÉRA</label>
+                <select id="mirrorPoseFinale" class="full-width">
+                    <option value="cote_a_cote">👯 Côte à côte, main dans la main</option>
+                    <option value="lune_derriere">💫 L'une derrière l'autre, mains sur épaules</option>
+                    <option value="face_a_face">👀 Face à face, puis regard caméra</option>
+                    <option value="bras_dessus">🤝 Bras dessus bras dessous</option>
+                    <option value="tete_epaule">😴 Tête sur l'épaule, puis regard caméra</option>
+                </select>
+            </div>
+            
+            <!-- INFO IMPORTANTE -->
+            <div class="info-note" style="margin-top: 15px; background: rgba(192,192,192,0.2); border-left-color: #c0c0c0;">
+                <i class="fas fa-info-circle"></i> 
+                <strong>⚠️ TRANSITIONS RÉALISTES - PAS DE MAGIE :</strong>
+                <ul style="margin-top: 8px; margin-left: 20px;">
+                    <li>🤝 <strong>Main tendue</strong> : Elle tire son clone par la main</li>
+                    <li>🚶 <strong>Contournement</strong> : Elle contourne, le clone l'attend</li>
+                    <li>👋 <strong>Par derrière</strong> : Le clone sort et vient derrière</li>
+                    <li>💃 <strong>Danse progressive</strong> : Le clone prend vie doucement</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>FINALE :</strong> Les DEUX face caméra, complices et sensuelles</p>
+            </div>
+            
+            <!-- APERÇU DU RENDU -->
+            <div style="margin-top: 15px; padding: 15px; background: rgba(192,192,192,0.1); border-radius: 10px; text-align: center;">
+                <i class="fas fa-regular fa-clone" style="font-size: 2em; color: #c0c0c0;"></i>
+                <p style="margin-top: 10px;"><strong>DUO FACE CAMÉRA - DOUBLE SENSUALITÉ</strong></p>
+                <p style="font-size: 0.9em;">Elle + son clone = DOUBLE LE SOURIRE, DOUBLE LE REGARD, DOUBLE LE PLAISIR</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 📱 SECTION MODE SELFIE -->
+<div class="card" style="border: 2px solid #ff69b4;">
+    <div class="card-header">
+        <i class="fas fa-camera" style="color: #ff69b4;"></i>
+        <h3>📱 MODE SELFIE</h3>
+        <span class="badge" style="background: #ff69b4;">NOUVEAU</span>
+    </div>
+    <div class="card-body">
+        <div class="toggle-container">
+            <label class="switch">
+                <input type="checkbox" id="enableSelfieMode">
+                <span class="slider"></span>
+            </label>
+            <span class="switch-label">Activer mode selfie (elle tient la caméra)</span>
+        </div>
+        
+        <div id="selfieOptions" style="margin-top: 15px; display: none;">
+            
+            <!-- AJOUTER ICI LE MENU DÉROULANT DES DANSES SELFIE -->
+            <div class="input-group" style="margin-top: 15px;">
+                <label>💃 STYLE DE DANSE SELFIE</label>
+                <select id="selfieDanceStyle" class="full-width">
+                    <option value="sensuelle">💃 Sensuelle - ondulations lentes, hanches, regards intenses</option>
+                    <option value="sexy">🔥 Sexy - mouvements de bassin, jeu avec les épaules, clins d'œil</option>
+                    <option value="charme">✨ Charme - mouvements fluides, sourires en coin, regards complices</option>
+                    <option value="energetique">⚡ Énergétique - mouvements vifs, dynamique, jeux avec le corps</option>
+                    <option value="lente">🌙 Lente - mouvements très lents, sensuels, hypnotiques</option>
+                    <option value="naturelle">🍃 Naturelle - mouvements naturels, décontractés, authentiques</option>
+                </select>
+            </div>
+            
+            <!-- LE RESTE DE TES OPTIONS SELFIE (type de selfie, etc.) -->
+            <div class="input-group">
+                <label>🤳 TYPE DE SELFIE</label>
+                <select id="selfieType" class="full-width">
+                    <option value="classique">🤳 Selfie Classique - Visage cadré serré</option>
+                    <option value="corps">💃 Selfie Corps - Elle montre son corps</option>
+                    <option value="macro">🔍 Selfie Macro - Gros plan yeux/peau/lèvres</option>
+                    <option value="environnement">🌍 Selfie Environnement - Elle montre le fond</option>
+                </select>
+            </div>
+            
+            <!-- INFO IMPORTANTE -->
+            <div class="info-note" style="margin-top: 15px;">
+                <i class="fas fa-info-circle"></i> 
+                <strong>⚠️ INSTRUCTION :</strong> Elle tient son téléphone à deux mains, bras tendu, elle danse et parle sensuellement.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+                <!-- 👇 SECTION TENUE RAPPEUR URBAIN (5 STYLES) 👇 -->
+                <div class="card" style="border: 2px solid #c0c0c0; background: linear-gradient(135deg, rgba(192,192,192,0.15), rgba(0,0,0,0.2));">
+                    <div class="card-header">
+                        <i class="fas fa-tshirt"></i>
+                        <h3>TENUE RAPPEUR URBAIN</h3>
+                        <span class="badge" style="background: #c0c0c0;">5 STYLES</span>
+                    </div>
+                    <div class="card-body">
+                        <label>Choisis le style du rappeur urbain :</label>
+                        <select id="rapperStyle" class="full-width" style="margin-top: 10px;">
+                            <option value="tenue1">🔥 Style Jogging (classique)</option>
+                            <option value="tenue2">🧥 Style Hoodie (décontracté)</option>
+                            <option value="tenue3">🏃 Style Streetwear (tendance)</option>
+                            <option value="tenue4">👖 Style Denim (jeans)</option>
+                            <option value="tenue5">⚽ Style Sportswear (vintage)</option>
+                        </select>
+                        
+                        <div class="info-note" style="margin-top: 15px;">
+                            <i class="fas fa-info-circle"></i> 
+                            <small>5 tenues 100% urbaines pour ton rappeur !</small>
+                        </div>
+                    </div>
+                </div>
+
+<!-- 👇 SECTION TENUE RAPPEUR AMÉRICAIN LUXE (5 STYLES) 👇 -->
+<div class="card" style="border: 2px solid gold; background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(0,0,0,0.2));">
+    <div class="card-header">
+        <i class="fas fa-crown"></i>
+        <h3>TENUE RAPPEUR AMÉRICAIN LUXE</h3>
+        <span class="badge" style="background: gold;">5 STYLES</span>
+    </div>
+    <div class="card-body">
+        <label>Choisis le style du rappeur américain :</label>
+        <select id="rapperluxeStyle" class="full-width" style="margin-top: 10px;">
+            <option value="tenue1">🌴 Style Miami (fourrure verte)</option>
+            <option value="tenue2">🎬 Style Hollywood (argenté)</option>
+            <option value="tenue3">🗽 Style New York (cuir noir)</option>
+            <option value="tenue4">🎵 Style Atlanta (costume violet)</option>
+            <option value="tenue5">🎰 Style Las Vegas (velours rouge)</option>
+        </select>
+        
+        <div class="info-note" style="margin-top: 15px; background: rgba(255,215,0,0.1);">
+            <i class="fas fa-info-circle"></i> 
+            <small>5 tenues luxueuses pour ton rappeur américain !</small>
+        </div>
+    </div>
+</div>
+
+                <!-- SECTION DÉCOR UNIQUE AVEC MONDES SPECTACULAIRES -->
+                <div class="card" style="border: 3px solid #00ffff; background: linear-gradient(135deg, rgba(0,255,255,0.15), rgba(0,0,139,0.15));">
+                    <div class="card-header">
+                        <i class="fas fa-map"></i>
+                        <h3>DÉCOR & MONDES SPECTACULAIRES</h3>
+                        <span class="badge" style="background: #00ffff; color: black;">23 MONDES</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="toggle-container">
+                            <label class="switch">
+                                <input type="checkbox" id="enableCustomDecor">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="switch-label">Activer décor personnalisé</span>
+                        </div>
+                        
+                        <div id="customDecorOptions" style="margin-top: 15px;">
+                            <div class="input-group">
+                                <label>✏️ TON DÉCOR (description libre)</label>
+                                <textarea id="customDecorText" rows="3" placeholder="Exemple: sur une plage paradisiaque de Neptune..." class="full-width"></textarea>
+                            </div>
+                            
+                            <div class="info-note" style="margin-top: 10px; padding: 8px; background: rgba(0,255,255,0.2); border-radius: 8px;">
+                                <i class="fas fa-info-circle"></i> 
+                                <small>Ton décor personnalisé REMPLACERA complètement le décor automatique du personnage !</small>
+                            </div>
+                            
+                            <!-- 🌍 MONDES SPECTACULAIRES - 23 univers différents -->
+                            <div style="margin-top: 20px;">
+                                <label style="font-size: 1.1em; color: #00ffff; display: block; margin-bottom: 10px; text-align: center;">
+                                    🌌 CHOISIS TON MONDE SPECTACULAIRE 🌌
+                                </label>
+                                
+                                <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; justify-content: center;">
+                                    
+                                    <!-- FUTURISTE / CYBERPUNK -->
+                                    <button type="button" class="btn small" style="background: #6600cc; border: 1px solid #aa88ff;" onclick="document.getElementById('customDecorText').value = 'dans une cité futuriste cyberpunk, néons violets et bleus, gratte-ciels illuminés, pluie fine, hologrammes géants dans le ciel, voitures volantes, ambiance Blade Runner'">
+                                        🌃 Cyberpunk
+                                    </button>
+                                    
+                                    <!-- PRÉHISTORIQUE -->
+                                    <button type="button" class="btn small" style="background: #8B4513; border: 1px solid #CD853F;" onclick="document.getElementById('customDecorText').value = 'dans une jungle préhistorique, fougères géantes, volcan en éruption au loin, dinosaures qui passent, ciel orange de fin du monde, ambiance Jurassique'">
+                                        🦖 Préhistorique
+                                    </button>
+                                    
+                                    <!-- FANTASTIQUE / ENCHANTÉ -->
+                                    <button type="button" class="btn small" style="background: #993399; border: 1px solid #CC66CC;" onclick="document.getElementById('customDecorText').value = 'dans une forêt enchantée, arbres lumineux aux couleurs pastel, champignons géants phosphorescents, fées qui volent autour, licorne au loin, rivière de lumière'">
+                                        🧚 Forêt Enchantée
+                                    </button>
+                                    
+                                    <!-- MÉDIÉVAL / CHÂTEAU -->
+                                    <button type="button" class="btn small" style="background: #996633; border: 1px solid #CC9966;" onclick="document.getElementById('customDecorText').value = 'dans un château médiéval, grande salle de bal avec lustres en cristal, torches aux murs, tapisseries anciennes, vue sur des montagnes par la fenêtre, ambiance royale'">
+                                        🏰 Médiéval
+                                    </button>
+                                    
+                                    <!-- SOUS-MARIN / ATLANTIDE -->
+                                    <button type="button" class="btn small" style="background: #006699; border: 1px solid #33CCFF;" onclick="document.getElementById('customDecorText').value = 'dans un royaume sous-marin, coraux multicolores, poissons exotiques, lumière qui filtre à travers l\'eau, bulles qui montent, épave de navire au loin, ambiance Atlantide'">
+                                        🌊 Sous-marin
+                                    </button>
+                                    
+                                    <!-- DÉSERT MYSTIQUE / ÉGYPTE -->
+                                    <button type="button" class="btn small" style="background: #CC9900; border: 1px solid #FFCC33;" onclick="document.getElementById('customDecorText').value = 'dans un désert mystique aux sables dorés, pyramides au loin, ciel étoilé avec voie lactée visible, oasis avec palmiers, ambiance mille et une nuits'">
+                                        🏜️ Désert Mystique
+                                    </button>
+                                    
+                                    <!-- VOLCANIQUE / LAVE -->
+                                    <button type="button" class="btn small" style="background: #CC3300; border: 1px solid #FF6600;" onclick="document.getElementById('customDecorText').value = 'sur une planète volcanique, rivières de lave en fusion, roches noires, ciel rouge et noir, cendres volcaniques, éclairs dans le ciel, ambiance apocalyptique'">
+                                        🌋 Volcanique
+                                    </button>
+                                    
+                                    <!-- GLACIAL / PALAIS DE GLACE -->
+                                    <button type="button" class="btn small" style="background: #3399FF; border: 1px solid #99CCFF;" onclick="document.getElementById('customDecorText').value = 'dans un palais de glace, murs de cristal gelé, aurores boréales dans le ciel, neige qui tombe doucement, sculptures de glace, ambiance reine des neiges'">
+                                        ❄️ Palais de Glace
+                                    </button>
+                                    
+                                    <!-- SPATIAL / COSMOS -->
+                                    <button type="button" class="btn small" style="background: #330066; border: 1px solid #9966FF;" onclick="document.getElementById('customDecorText').value = 'dans l\'espace infini, flottant entre les étoiles, nébuleuses colorées (rose, bleu, violet), planètes lointaines en arrière-plan, poussière d\'étoiles, ambiance cosmique'">
+                                        ✨ Cosmos
+                                    </button>
+                                    
+                                    <!-- JAPON FÉERIQUE / SPIRITED AWAY -->
+                                    <button type="button" class="btn small" style="background: #CC6699; border: 1px solid #FF99CC;" onclick="document.getElementById('customDecorText').value = 'dans un Japon féerique, cerisiers en fleurs géants, lanternes flottantes, temples anciens, montagnes brumeuses, dragons volants dans le ciel, ambiance Spirited Away'">
+                                        🎎 Japon Féerique
+                                    </button>
+                                    
+                                    <!-- STEAMPUNK -->
+                                    <button type="button" class="btn small" style="background: #996633; border: 1px solid #CC9966;" onclick="document.getElementById('customDecorText').value = 'dans une cité steampunk, engrenages géants, machines à vapeur, dirigeables dans le ciel, rues pavées, lampes au gaz, ambiance victorienne futuriste'">
+                                        ⚙️ Steampunk
+                                    </button>
+                                    
+                                    <!-- PARADIS TROPICAL -->
+                                    <button type="button" class="btn small" style="background: #00CC99; border: 1px solid #66FFCC;" onclick="document.getElementById('customDecorText').value = 'sur une île paradisiaque, plage de sable blanc, eau turquoise, coucher de soleil orange et rose, cocotiers, hamac entre deux palmiers, ambiance vacances de rêve'">
+                                        🏝️ Paradis Tropical
+                                    </button>
+                                    
+                                    <!-- TEMPLE ANCIEN / INDIANA JONES -->
+                                    <button type="button" class="btn small" style="background: #336600; border: 1px solid #66CC33;" onclick="document.getElementById('customDecorText').value = 'dans un temple ancien envahi par la jungle, statues de pierre, lianes, rayons de soleil traversant la végétation, mystère et aventure, ambiance Indiana Jones'">
+                                        🗿 Temple Ancien
+                                    </button>
+                                    
+                                    <!-- FÊTE FORAINE / CIRQUE -->
+                                    <button type="button" class="btn small" style="background: #FF3399; border: 1px solid #FF99CC;" onclick="document.getElementById('customDecorText').value = 'dans une fête foraine la nuit, grande roue illuminée, manèges colorés, guirlandes lumineuses, stands de jeux, musique douce au loin, ambiance magique et enfantine'">
+                                        🎡 Fête Foraine
+                                    </button>
+                                    
+                                    <!-- CHÂTEAU HANTÉ / HALLOWEEN -->
+                                    <button type="button" class="btn small" style="background: #663333; border: 1px solid #996666;" onclick="document.getElementById('customDecorText').value = 'dans un château hanté, toiles d\'araignée, bougies qui flottent, fantômes transparents, pleine lune rouge, brume au sol, ambiance Halloween'">
+                                        👻 Château Hanté
+                                    </button>
+                                    
+                                    <!-- ATLANTIDE / CITÉ PERDUE -->
+                                    <button type="button" class="btn small" style="background: #006666; border: 1px solid #33CCCC;" onclick="document.getElementById('customDecorText').value = 'dans la cité perdue de l\'Atlantide, ruines anciennes sous l\'eau, statues géantes, rayons de lumière traversant les profondeurs, poissons lumineux, mystère antique'">
+                                        🏛️ Atlantide
+                                    </button>
+                                    
+                                    <!-- MONTAGNES MAGIQUES -->
+                                    <button type="button" class="btn small" style="background: #669999; border: 1px solid #99CCCC;" onclick="document.getElementById('customDecorText').value = 'dans des montagnes magiques, pics enneigés, aurores boréales, cascades gelées, nuages en contrebas, ambiance himalayenne mystique'">
+                                        ⛰️ Montagnes Magiques
+                                    </button>
+                                    
+                                    <!-- LABORATOIRE SECRET -->
+                                    <button type="button" class="btn small" style="background: #99FF99; border: 1px solid #CCFFCC; color: #000;" onclick="document.getElementById('customDecorText').value = 'dans un laboratoire secret high-tech, éprouvettes géantes, liquides phosphorescents, machines futuristes, hologrammes de formules chimiques, expériences en cours'">
+                                        🔬 Labo Secret
+                                    </button>
+                                    
+                                    <!-- SALOON WESTERN -->
+                                    <button type="button" class="btn small" style="background: #CC9966; border: 1px solid #FFCC99;" onclick="document.getElementById('customDecorText').value = 'dans un saloon du Far West, comptoir en bois, miroirs, joueurs de poker, musique country, portes battantes, ambiance cow-boy'">
+                                        🤠 Saloon Western
+                                    </button>
+                                    
+                                    <!-- PALAIS ORIENTAL -->
+                                    <button type="button" class="btn small" style="background: #FF9900; border: 1px solid #FFCC66;" onclick="document.getElementById('customDecorText').value = 'dans un palais oriental, tapis volants, coussins de soie, fontaines, mosaïques colorées, lumières tamisées, ambiance mille et une nuits'">
+                                        🕌 Palais Oriental
+                                    </button>
+                                    
+                                    <!-- JARDIN JAPONAIS -->
+                                    <button type="button" class="btn small" style="background: #99CC99; border: 1px solid #CCFFCC;" onclick="document.getElementById('customDecorText').value = 'dans un jardin japonais traditionnel, cerisiers en fleurs, pont rouge, koi dans l\'étang, lanternes de pierre, brume légère au petit matin'">
+                                        🎋 Jardin Japonais
+                                    </button>
+
+                                    <!-- ÉGYPTE / CLÉOPÂTRE -->
+                                    <button type="button" class="btn small" style="background: #D4AF37; border: 1px solid #FFD700;" onclick="document.getElementById('customDecorText').value = 'dans le palais royal de Cléopâtre à Alexandrie, colonnes égyptiennes géantes en or, hiéroglyphes lumineux sur les murs, vue sur le Nil au coucher du soleil, trône en or massif avec coussins pourpres, encens qui brûle, statues de dieux égyptiens, ambiance mystique et royale'">
+                                        👑 Palais de Cléopâtre
+                                    </button>
+                                    
+                                    <!-- TEMPLE ÉGYPTIEN -->
+                                    <button type="button" class="btn small" style="background: #CD7F32; border: 1px solid #DAA520;" onclick="document.getElementById('customDecorText').value = 'dans un temple égyptien antique, colonnes massives, hiéroglyphes gravés dans la pierre, torches aux murs, statues de dieux (Anubis, Horus), rayons de soleil traversant les ouvertures, ambiance mystérieuse et sacrée'">
+                                        🏛️ Temple Égyptien
+                                    </button>
+                                    
+                                    <!-- BORDS DU NIL -->
+                                    <button type="button" class="btn small" style="background: #228B22; border: 1px solid #32CD32;" onclick="document.getElementById('customDecorText').value = 'sur les rives du Nil au coucher du soleil, palmiers, papyrus, felouques traditionnelles sur l\'eau, ciel orange et rose, pyramides au loin, ambiance paisible et romantique'">
+                                        🌅 Bords du Nil
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 15px; text-align: center;">
+                                <small style="color: #00ffff;">✨ Clique sur un monde pour remplir le décor automatiquement ✨</small>
+                            </div>
+                        </div>
+                        
+                        <div class="info-note" style="margin-top: 15px; background: rgba(255,255,255,0.1);">
+                            <i class="fas fa-info-circle"></i> 
+                            <strong>Mode automatique :</strong> Si non activé, le décor sera choisi automatiquement selon ton personnage.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION SCRIPT DU PERSONNAGE -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-comment"></i>
+                        <h3>SCRIPT DU PERSONNAGE</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="toggle-container">
+                            <label class="switch">
+                                <input type="checkbox" id="enableScript">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="switch-label">Activer dialogue</span>
+                        </div>
+                        
+                        <div id="scriptOptions" style="margin-top: 15px; display: none;">
+                            <div class="input-group">
+                                <label>📝 TEXTE À DIRE</label>
+                                <textarea id="scriptText" rows="3" placeholder="Ex: Bienvenue dans ma danse !" class="full-width"></textarea>
+                            </div>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label"><input type="checkbox" id="scriptPart1"> Dire en partie 1</label>
+                                <label class="checkbox-label"><input type="checkbox" id="scriptPart2" checked> Dire en partie 2</label>
+                                <label class="checkbox-label"><input type="checkbox" id="scriptFinal"> Dire à la fin</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION NIVEAU DE SURPRISE -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-face-surprise"></i>
+                        <h3>NIVEAU DE SURPRISE</h3>
+                    </div>
+                    <div class="card-body">
+                        <input type="range" id="surpriseLevel" min="1" max="10" value="7" class="slider-input">
+                        <div class="slider-labels" style="display: flex; justify-content: space-between; margin-top: 5px;">
+                            <span>Subtile</span>
+                            <span>Wow</span>
+                            <span>Explosif</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION OPTIONS SPÉCIALES (YEUX + TACHES) -->
+                <div id="special-options-container" style="border: 2px solid #ff69b4; background: linear-gradient(135deg, rgba(255,105,180,0.15), rgba(255,20,147,0.15)); padding: 15px; border-radius: 10px; margin-top: 20px;">
+                    <div class="card-header" style="margin-bottom: 15px;">
+                        <i class="fas fa-eye" style="color: #ff69b4;"></i>
+                        <h3 style="color: #ff69b4;">OPTIONS SPÉCIALES 8K</h3>
+                        <span class="badge" style="background: #ff69b4;">DÉTAIL ULTRA-RÉALISTE</span>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px; padding: 10px; background: rgba(255,105,180,0.1); border-radius: 8px;">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="enable-eyes" style="width: 18px; height: 18px;">
+                            <span style="font-weight: bold; color: #ff69b4;">👁️ YEUX DIFFÉRENTS (Hétérochromie) - Ultra-réalistes 8K</span>
+                        </label>
+                        
+                        <div id="eye-controls" style="display:none; margin-top: 15px; margin-left: 30px;">
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                                <div style="flex: 1; min-width: 200px;">
+                                    <label style="display: block; margin-bottom: 5px; color: #ffb6c1;">👈 Œil GAUCHE</label>
+                                    <select id="eye-left-select" class="full-width" style="background: rgba(255,105,180,0.2); border-color: #ff69b4;">
+                                        <!-- Rempli par JavaScript -->
+                                    </select>
+                                </div>
+                                <div style="flex: 1; min-width: 200px;">
+                                    <label style="display: block; margin-bottom: 5px; color: #ffb6c1;">👉 Œil DROIT</label>
+                                    <select id="eye-right-select" class="full-width" style="background: rgba(255,105,180,0.2); border-color: #ff69b4;">
+                                        <!-- Rempli par JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="info-note" style="margin-top: 10px; background: rgba(255,105,180,0.2);">
+                                <i class="fas fa-info-circle"></i> 
+                                <small>Les yeux seront rendus en macro 8K avec vaisseaux sanguins visibles, reflets multiples et détails infimes de l'iris.</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 10px; background: rgba(255,182,193,0.1); border-radius: 8px;">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="enable-skin" style="width: 18px; height: 18px;">
+                            <span style="font-weight: bold; color: #ffb6c1;">🎨 TACHES DE NAISSANCE / VITILIGO - Ultra-réalistes 8K</span>
+                        </label>
+                        
+                        <div id="skin-controls" style="display:none; margin-top: 15px; margin-left: 30px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 5px; color: #ffb6c1;">Couleur des taches</label>
+                                <select id="skin-color-select" class="full-width" style="background: rgba(255,182,193,0.2); border-color: #ff69b4;">
+                                    <!-- Rempli par JavaScript -->
+                                </select>
+                            </div>
+                            <div class="info-note" style="margin-top: 10px; background: rgba(255,182,193,0.2);">
+                                <i class="fas fa-info-circle"></i> 
+                                <small>Les taches de naissance sont rendues avec une texture de peau hyper-réaliste : pores visibles, contours naturels, intégration parfaite.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <!-- BOUTON GÉNÉRER -->
+                <button class="generate-btn" id="generatePrompt">
+                    <i class="fas fa-bolt"></i> GÉNÉRER LE PROMPT
+                </button>
+            </div>
+
+            <!-- COLONNE DROITE - RÉSULTAT -->
+            <div class="right-col">
+                <div class="result-card">
+                    <div class="result-header">
+                        <h3><i class="fas fa-terminal"></i> PROMPT GÉNÉRÉ</h3>
+                        <div class="result-actions">
+                            <button class="icon-btn" id="copyPrompt"><i class="fas fa-copy"></i></button>
+                            <button class="icon-btn" id="exportPrompt"><i class="fas fa-download"></i></button>
+                            <button class="icon-btn" id="translatePrompt" title="Traduire en anglais"><i class="fas fa-language"></i></button>
+                            <button class="icon-btn" id="clearPrompt"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="prompt-tabs">
+                        <button class="tab-btn active" id="tabFull">Complet</button>
+                        <button class="tab-btn" id="tabPart1">Partie 1</button>
+                        <button class="tab-btn" id="tabPart2">Partie 2</button>
+                        <button class="tab-btn" id="tabConsignes">Consignes</button>
+                    </div>
+                    
+                    <div class="prompt-display" id="promptDisplay"></div>
+                    
+                    <div class="recap">
+                        <h4>RÉCAPITULATIF</h4>
+                        <div id="recapContent"></div>
+                    </div>
+                    
+                    <div class="tips">
+                        <h4>CONSEILS</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Sélectionnez un personnage</li>
+                            <li><i class="fas fa-check-circle"></i> Choisissez vos effets</li>
+                            <li><i class="fas fa-check-circle"></i> Générez le prompt</li>
+                            <li><i class="fas fa-check-circle"></i> Copiez dans Grok</li>
+                            <li><i class="fas fa-check-circle" style="color: #ffd700;"></i> Transition naturelle - Changement HORS CAMÉRA</li>
+                            <li><i class="fas fa-check-circle" style="color: #00ffff;"></i> Visage 8K - Pores, cils, vaisseaux sanguins</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2024 - PROMPT DANCE STUDIO v6.0 ULTIME - 72 personnages - Tous les effets - Visage 8K - 23 mondes spectaculaires</p>
+        </footer>
+    </div>
+
+    <script src="data/countries.js"></script>
+    <script src="data/actions.js"></script>
+    <script src="data/danceMoves.js"></script>
+    <script src="data/outfits.js"></script>
+    <script src="data/hairColors.js"></script>
+    <script src="data/seductionGestures.js"></script>
+    <script src="data/specialFeatures.js"></script>
+    <script src="data/equilibriste.js"></script>
+    <script src="equilibriste-config.js"></script>
+    <script src="equilibriste-prompt.js"></script>
+    <script src="data/animalMode.js"></script>
+    <script src="animal-config.js"></script>
+    <script src="animal-prompt.js"></script>
+    <script src="data/mirrorMode.js"></script>
+    <script src="data/selfieMode.js"></script>
+    <script src="data/fantasyModes.js"></script>
+    <script src="data/fantasyConfig.js"></script>
+    <script src="data/fantasyDanceMoves.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
