@@ -1,7 +1,7 @@
-// script.js - VERSION ULTRA-COURTE (max 1000 caractères)
-// Toutes les fonctionnalités conservées : 73 personnages, modes, effets, finales
+// script.js - VERSION OPTIMISÉE (Part1<1000, Part2<1000, Full<2000)
+// TENUE FINALE : COMPLÈTE (éléments + accessoires sans troncature)
 
-console.log("🚀 Script ULTRA-COURTE chargé");
+console.log("🚀 Script OPTIMISÉ chargé");
 
 if (typeof personnageActions !== 'undefined' && !window.personnageActions) {
     window.personnageActions = personnageActions;
@@ -119,7 +119,7 @@ class PromptGenerator {
         const col2 = document.getElementById('textColor2')?.value;
         const sz = { small:'petits', medium:'moyens', large:'grands', xlarge:'très grands' }[document.getElementById('textSize')?.value] || 'moyens';
         const qty = { few:'2-3', medium:'4-6', many:'7-10' }[document.getElementById('textQuantity')?.value] || '4-6';
-        return `\n✨ Textes magiques: ${w.join(', ')} - ${eff} - ${mov} - ${col}/${col2} - ${sz} - ${qty}`;
+        return `\n✨ Textes: ${w.join(', ')} - ${eff} - ${mov} - ${sz} - ${qty}`;
     }
 
     generateAlien() {
@@ -172,7 +172,7 @@ class PromptGenerator {
         const t = document.getElementById('animalBabyType')?.value || 'chiot';
         const i = { tendre:'TENDRE', joueur:'JOUEUR', mixte:'MIXTE' }[document.getElementById('animalBabyIntensity')?.value] || 'TENDRE';
         const p = { variees:'VARIÉES', fixe:'FIXE', dynamiques:'DYNAMIQUES' }[document.getElementById('animalBabyPositions')?.value] || 'VARIÉES';
-        return `\n🐶 BÉBÉ ANIMAL: ${t === 'chiot' ? 'chiot' : 'chaton'} - ${i} - positions ${p}`;
+        return `\n🐶 BÉBÉ: ${t === 'chiot' ? 'chiot' : 'chaton'} - ${i} - pos ${p}`;
     }
 
     generateMirror() {
@@ -180,7 +180,7 @@ class PromptGenerator {
         const t = { classique:'identique', tenue_inversee:'couleurs inversées', regard_different:'regard intense' }[document.getElementById('mirrorType')?.value] || 'identique';
         const d = { synchronise:'synchro', miroir:'miroir', complementaire:'complémentaire', sensuel:'sensuel' }[document.getElementById('mirrorDuoStyle')?.value] || 'synchro';
         const p = document.getElementById('mirrorPoseFinale')?.value || 'cote_a_cote';
-        return `\n🪞 MIROIR: clone ${t} - danse ${d} - finale ${p === 'cote_a_cote' ? 'côte à côte' : p}`;
+        return `\n🪞 MIROIR: clone ${t} - danse ${d}`;
     }
 
     generateFantasy() {
@@ -193,7 +193,7 @@ class PromptGenerator {
         if (document.getElementById('enable-eyes')?.checked) {
             const g = document.getElementById('eye-left-select')?.value || 'bleu';
             const d = document.getElementById('eye-right-select')?.value || 'marron';
-            r += `\n👁️ Yeux: gauche ${g}, droit ${d} (hétérochromie)`;
+            r += `\n👁️ Yeux: ${g}/${d}`;
         }
         if (document.getElementById('enable-skin')?.checked) {
             const c = document.getElementById('skin-color-select')?.value || 'blanc';
@@ -213,9 +213,7 @@ class PromptGenerator {
         if (document.getElementById('effectLaser')?.checked) e.push('lasers');
         if (document.getElementById('effectBulles')?.checked) e.push('bulles');
         if (e.length === 0) return '';
-        const s = document.getElementById('surpriseLevel')?.value || 7;
-        const txt = s <= 3 ? 'subtile' : s <= 6 ? 'wow' : s <= 8 ? 'explosion' : 'hallucinant';
-        return `\n💥 Effets: ${e.join(', ')} (${txt})`;
+        return `\n💥 Effets: ${e.join(', ')}`;
     }
 
     generateSelfie() {
@@ -264,18 +262,18 @@ class PromptGenerator {
         const sed = this.getSeductionPhrase(this.userData.seductionLevel);
         let g = '';
         if (!this.userData.mirrorMode.enabled) {
-            if (this.userData.gestures.regards) g += ' regards charmeurs';
+            if (this.userData.gestures.regards) g += ' regards';
             if (this.userData.gestures.sourires) g += ' sourires';
             if (this.userData.gestures.clins) g += ' clins';
             if (this.userData.gestures.levres) g += ' mord lèvre';
             if (this.userData.gestures.mains) g += ' mains sur corps';
             if (this.userData.gestures.cheveux) g += ' jeux cheveux';
             if (this.userData.gestures.bisous) g += ` bisous x${this.userData.gestures.bisousCount}`;
-            if (this.userData.gestures.viens) g += ` "viens" x${this.userData.gestures.viensCount}`;
+            if (this.userData.gestures.viens) g += ` viens x${this.userData.gestures.viensCount}`;
         }
-        const dm = (danceMoves && danceMoves[this.userData.country]?.part1) ? danceMoves[this.userData.country].part1.slice(0,2).join(', ') : 'mouvements sensuels';
+        const dm = (danceMoves && danceMoves[this.userData.country]?.part1) ? danceMoves[this.userData.country].part1[0] : 'mouvements sensuels';
         const float = this.generateFloatingWords();
-        return `PART1 (0-6s): Danse ${c.dance} ${sed} face caméra. Cheveux: ${this.userData.naturalHair}. Mouvements: ${dm}.${g ? ` Gestes:${g}.` : ''}${float} A 5s: mains plaquées objectif → écran noir (se change).`;
+        return `PART1 (0-6s): Danse ${c.dance} ${sed}. Cheveux naturels: ${this.userData.naturalHair}. Mouvements: ${dm}.${g}${float} A 5s: mains objectif → noir (se change).`;
     }
 
     generatePart2() {
@@ -288,28 +286,28 @@ class PromptGenerator {
         let g = '';
         if (isSelfie) {
             g = ' mains libres:';
-            if (this.userData.gestures.regards) g += ' regards intenses';
+            if (this.userData.gestures.regards) g += ' regards';
             if (this.userData.gestures.sourires) g += ' sourires';
             if (this.userData.gestures.clins) g += ' clins';
             if (this.userData.gestures.levres) g += ' mord lèvre';
-            if (this.userData.gestures.mains) g += ' mains sur corps';
-            if (this.userData.gestures.cheveux) g += ' jeux cheveux';
+            if (this.userData.gestures.mains) g += ' mains corps';
+            if (this.userData.gestures.cheveux) g += ' cheveux';
             if (this.userData.gestures.bisous) g += ` bisous x${this.userData.gestures.bisousCount}`;
-            if (this.userData.gestures.viens) g += ` "viens" x${this.userData.gestures.viensCount}`;
+            if (this.userData.gestures.viens) g += ` viens x${this.userData.gestures.viensCount}`;
         } else if (isMirror) {
-            g = ' PAS de gestes mains (règle miroir)';
+            g = ' PAS gestes mains (règle miroir)';
         } else {
-            if (this.userData.gestures.regards) g += ' regards intenses';
+            if (this.userData.gestures.regards) g += ' regards';
             if (this.userData.gestures.sourires) g += ' sourires';
             if (this.userData.gestures.clins) g += ' clins';
             if (this.userData.gestures.levres) g += ' mord lèvre';
-            if (this.userData.gestures.mains) g += ' mains sur corps';
-            if (this.userData.gestures.cheveux) g += ' jeux cheveux';
+            if (this.userData.gestures.mains) g += ' mains corps';
+            if (this.userData.gestures.cheveux) g += ' cheveux';
             if (this.userData.gestures.bisous) g += ` bisous x${this.userData.gestures.bisousCount}`;
-            if (this.userData.gestures.viens) g += ` "viens" x${this.userData.gestures.viensCount}`;
+            if (this.userData.gestures.viens) g += ` viens x${this.userData.gestures.viensCount}`;
         }
         
-        const dm = (danceMoves && danceMoves[this.userData.country]?.part2) ? danceMoves[this.userData.country].part2.slice(0,2).join(', ') : 'mouvements intenses';
+        const dm = (danceMoves && danceMoves[this.userData.country]?.part2) ? danceMoves[this.userData.country].part2[0] : 'mouvements intenses';
         const action = this.getRandomAction(this.getActionType(this.userData.country));
         const decor = this.getUnifiedDecor();
         const finale = this.getFinaleGesture();
@@ -326,30 +324,28 @@ class PromptGenerator {
         const effects = this.generateEffects();
         const dialogue = this.generateDialogue();
         
-        // Tenue finale détaillée
+        // TENUE FINALE COMPLÈTE (sans troncature)
         let outfit = '';
         if (c && c.finalOutfit && c.finalOutfit.colors) {
-            outfit = `${c.finalOutfit.description} - Couleurs: ${c.finalOutfit.colors.join(', ')} - Éléments: ${c.finalOutfit.elements.slice(0,3).join(', ')}... - Acc: ${c.finalOutfit.accessories.slice(0,3).join(', ')}...`;
+            outfit = `${c.finalOutfit.description} - Couleurs: ${c.finalOutfit.colors.join(', ')} - Éléments: ${c.finalOutfit.elements.join(', ')} - Accessoires: ${c.finalOutfit.accessories.join(', ')}`;
         } else if (this.userData.country === 'rapper' && countries.rapper?.tenues) {
             const t = countries.rapper.tenues[this.userData.rapperStyle];
-            if (t) outfit = `${t.description} - ${t.colors.join(', ')} - ${t.elements.slice(0,3).join(', ')}`;
+            if (t) outfit = `${t.description} - Couleurs: ${t.colors.join(', ')} - Éléments: ${t.elements.join(', ')} - Accessoires: ${t.accessories.join(', ')}`;
         } else if (this.userData.country === 'rapperluxe' && countries.rapperluxe?.tenues) {
             const t = countries.rapperluxe.tenues[this.userData.rapperluxeStyle];
-            if (t) outfit = `${t.description} - ${t.colors.join(', ')} - ${t.elements.slice(0,3).join(', ')}`;
+            if (t) outfit = `${t.description} - Couleurs: ${t.colors.join(', ')} - Éléments: ${t.elements.join(', ')} - Accessoires: ${t.accessories.join(', ')}`;
         } else {
             outfit = this.userData.finalOutfit || "tenue spectaculaire";
         }
         
-        const hair = this.userData.enableFluo ? `Cheveux: ${this.userData.fluoColor} ${fluoInt}, style ${this.userData.hairStyle}` : `Cheveux naturels: ${this.userData.naturalHair}`;
+        const hair = this.userData.enableFluo ? `Cheveux: ${this.userData.fluoColor} ${fluoInt}, ${this.userData.hairStyle}` : `Cheveux: ${this.userData.naturalHair}`;
         
-        return `PART2 (6-12s): Suite, même visage. ${hair}. Tenue: ${outfit}. Danse ${c.dance}: ${dm}. Action: ${action}.${g ? ` Gestes:${g}` : ''}${float} Décor: ${decor}.${alien}${avatar}${animal}${animalBaby}${mirror}${fantasy}${special}${effects}${dialogue} FINALE (11-12s): ${finale} Puis ${finalOpt}. ${interaction}. Vision caméra.`;
+        return `PART2 (6-12s): Suite, même visage. ${hair}. Tenue: ${outfit}. Danse ${c.dance}: ${dm}. Action: ${action}.${g}${float} Décor: ${decor}.${alien}${avatar}${animal}${animalBaby}${mirror}${fantasy}${special}${effects}${dialogue} FINALE: ${finale} puis ${finalOpt}. ${interaction}.`;
     }
 
     generateConsignes() {
         const c = countries[this.userData.country];
-        const b = this.userData.gestures.bisous ? 'BISOUS' : '';
-        const v = this.userData.gestures.viens ? 'VIENS' : '';
-        return `CONSIGNES: 1.Même visage 2.Transformation hors caméra 3.Ultra-réaliste (pores, yeux vivants) 4.Silence 5.Séduction ${b} ${v} 6.Cheveux ${this.userData.enableFluo ? 'FLUO' : 'NATURELS'} 7.Danse ${c.name} (${c.dance}) 8.Rien ne change en PART2 9.Finale soignée`;
+        return `CONSIGNES: Même visage | Transformation hors caméra | Ultra-réaliste | Silence | Danse ${c.name} (${c.dance}) | Rien ne change en PART2 | Finale soignée`;
     }
 
     generateFullPrompt() {
@@ -361,7 +357,7 @@ class PromptGenerator {
     }
 }
 
-// ========== INITIALISATION ==========
+// ========== INITIALISATION (inchangée) ==========
 function initCharacters() {
     const grid = document.getElementById('countryGrid');
     if (!grid) return;
@@ -453,7 +449,7 @@ function attachEvents() {
         if (!sel) { alert('Sélectionnez un personnage'); return; }
         const c = countries[sel.dataset.country];
         if (c?.finalOutfit?.colors) {
-            document.getElementById('finalOutfitDescription').value = `${c.finalOutfit.description} - Couleurs: ${c.finalOutfit.colors.join(', ')}. Éléments: ${c.finalOutfit.elements.slice(0,3).join(', ')}...`;
+            document.getElementById('finalOutfitDescription').value = `${c.finalOutfit.description} - Couleurs: ${c.finalOutfit.colors.join(', ')}. Éléments: ${c.finalOutfit.elements.join(', ')}. Accessoires: ${c.finalOutfit.accessories.join(', ')}`;
         } else alert('Aucune tenue prédéfinie');
     });
     document.getElementById('enableMagicTexts')?.addEventListener('change', function() { document.getElementById('magicTextsOptions').style.display = this.checked ? 'block' : 'none'; });
@@ -467,7 +463,6 @@ function attachEvents() {
     document.getElementById('enableScript')?.addEventListener('change', function() { document.getElementById('scriptOptions').style.display = this.checked ? 'block' : 'none'; });
     if (typeof initFantasyConfig === 'function') initFantasyConfig();
     
-    // Sliders
     document.getElementById('fluoIntensity')?.addEventListener('input', function() {
         const v = parseInt(this.value);
         const l = ['Faible','Léger','Moyen','Brillant','Éclatant','Intense','Fulgurant','Phosphorescent','Néon','AVEUGLANT'];
@@ -477,7 +472,6 @@ function attachEvents() {
         document.getElementById('seductionValue').textContent = this.value + '/10';
     });
     
-    // Conditional options
     const setup = () => {
         const toggle = (id, opt) => document.getElementById(id)?.addEventListener('change', function() { document.getElementById(opt).style.display = this.checked ? 'block' : 'none'; });
         toggle('alienSkin', 'alienSkinOptions');
@@ -544,7 +538,7 @@ function startApp() {
     populateSpecialSelects();
     initCharacters();
     attachEvents();
-    console.log("✅ App prête - version ULTRA-COURTE");
+    console.log("✅ App prête - version OPTIMISÉE (Part1<1000, Part2<1000, Full<2000)");
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startApp);
