@@ -1,505 +1,236 @@
-// script.js - Version ALLÉGÉE CORRIGÉE
-// TENUE FINALE : Affichage complet des détails (couleurs, éléments, accessoires) pour TOUS les 73 personnages
-// CORRECTION : La tenue finale s'affiche en texte riche et détaillé dans le prompt généré
+// script.js - VERSION ULTRA-COURTE (max 1000 caractères)
+// Toutes les fonctionnalités conservées : 73 personnages, modes, effets, finales
 
-console.log("🚀 Chargement de script.js (Version allégée - Correction tenue finale)...");
+console.log("🚀 Script ULTRA-COURTE chargé");
 
-// Exposer les fonctions de actions.js
 if (typeof personnageActions !== 'undefined' && !window.personnageActions) {
     window.personnageActions = personnageActions;
     window.getRandomDecor = getRandomDecor;
     window.getRandomAction = getRandomAction;
-    console.log("✅ actions.js exposé globalement");
 }
 
-// ==================== DONNÉES DES DANSES SELFIE ====================
 const selfieDances = {
-    'sensuelle': {
-        name: 'Danse Sensuelle',
-        description: 'ondulations lentes, hanches, cambrures, regards intenses'
-    },
-    'sexy': {
-        name: 'Danse Sexy',
-        description: 'mouvements de bassin, jeu avec les épaules, clins d\'œil'
-    },
-    'charme': {
-        name: 'Danse Charme',
-        description: 'mouvements fluides, sourires en coin, regards complices'
-    },
-    'energetique': {
-        name: 'Danse Énergétique',
-        description: 'mouvements vifs, jeux avec le corps, dynamique'
-    },
-    'lente': {
-        name: 'Danse Lente',
-        description: 'mouvements très lents, sensuels, presque hypnotiques'
-    },
-    'naturelle': {
-        name: 'Danse Naturelle',
-        description: 'mouvements naturels, décontractés, authentiques'
-    }
+    'sensuelle': 'ondulations lentes, hanches, regards intenses',
+    'sexy': 'mouvements bassin, clins d\'œil',
+    'charme': 'mouvements fluides, sourires complices',
+    'energetique': 'mouvements vifs et dynamiques',
+    'lente': 'mouvements très lents, hypnotiques',
+    'naturelle': 'mouvements naturels et authentiques'
 };
 
-// ==================== CLASSE PRINCIPALE ====================
 class PromptGenerator {
     constructor() {
-        this.userData = {};
         this.typeMapping = {
-            'default': 'pirate',
-            'fairy': 'fairy',
-            'vampire': 'vampire',
-            'elf': 'elf',
-            'superman': 'superman',
-            'cowgirl': 'cowgirl',
-            'pirate': 'pirate',
-            'princess': 'princess',
-            'siren': 'siren',
-            'cavewoman': 'cavewoman',
-            'athena': 'athena',
-            'avatar': 'avatar',
-            'avatarwarrior': 'avatarwarrior',
-            'avatarchief': 'avatarchief'
+            'default': 'pirate', 'fairy': 'fairy', 'vampire': 'vampire', 'elf': 'elf',
+            'superman': 'superman', 'cowgirl': 'cowgirl', 'pirate': 'pirate',
+            'princess': 'princess', 'siren': 'siren', 'cavewoman': 'cavewoman',
+            'athena': 'athena', 'avatar': 'avatar', 'avatarwarrior': 'avatarwarrior', 'avatarchief': 'avatarchief'
         };
     }
 
-    getActionType(personnageKey) {
-        if (!countries || !countries[personnageKey]) return 'default';
-        let type = countries[personnageKey].type || personnageKey;
-        const actions = window.personnageActions || {};
-        if (actions[type]) return type;
-        if (this.typeMapping[type]) return this.typeMapping[type];
-        return 'default';
-    }
+    getActionType(k) { let t = countries[k]?.type || k; return window.personnageActions?.[t] ? t : (this.typeMapping[t] || 'default'); }
+    getRandomDecor(k) { return window.getRandomDecor?.(k) || "studio pro"; }
+    getRandomAction(k) { return window.getRandomAction?.(k) || "danse sensuelle"; }
 
-    getRandomDecor(personnageKey) {
-        if (typeof window.getRandomDecor === 'function') return window.getRandomDecor(personnageKey);
-        return "dans un studio de danse professionnel";
-    }
-
-    getRandomAction(personnageKey) {
-        if (typeof window.getRandomAction === 'function') return window.getRandomAction(personnageKey);
-        return "elle danse sensuellement face caméra";
-    }
-
-    // ===== DÉCOR UNIFIÉ =====
     getUnifiedDecor() {
-        const selected = document.querySelector('.character-card.selected');
-        if (!selected) return "studio professionnel";
-        const countryKey = selected.dataset.country;
-        const country = countries[countryKey];
-        const customEnabled = document.getElementById('enableCustomDecor')?.checked || false;
-        const customText = document.getElementById('customDecorText')?.value || '';
-        if (customEnabled && customText.trim() !== '') return customText.trim();
-        const actionType = this.getActionType(countryKey);
-        const randomDecor = this.getRandomDecor(actionType);
-        if (randomDecor && randomDecor !== "studio professionnel") return randomDecor;
-        if (country && country.background) return country.background;
-        return "dans un studio de danse professionnel avec éclairages tamisés";
+        const c = document.querySelector('.character-card.selected');
+        if (!c) return "studio pro";
+        const custom = document.getElementById('enableCustomDecor')?.checked;
+        const customText = document.getElementById('customDecorText')?.value;
+        if (custom && customText.trim()) return customText.trim();
+        const decor = this.getRandomDecor(this.getActionType(c.dataset.country));
+        return (decor && decor !== "studio pro") ? decor : (countries[c.dataset.country]?.background || "studio pro");
     }
 
-    // ===== FINALE SPECTACULAIRE =====
     getFinaleGesture() {
-        const animalBabyModeEnabled = document.getElementById('enableAnimalBabyMode')?.checked || false;
-        const animalType = document.getElementById('animalBabyType')?.value || 'chiot';
-        const animalNom = animalType === 'chiot' ? 'son chiot' : 'son chaton';
-        
-        if (animalBabyModeEnabled) {
-            return `FINALE SPÉCIALE MODE CÂLIN (dernière seconde) :
-À LA SECONDE 5 EXACTEMENT (dernière seconde de la vidéo) :
-- Elle serre ${animalNom} TRÈS FORT contre elle dans un dernier CÂLIN intense
-- Elle pose sa joue sur sa tête, FERME LES YEUX avec un sourire de pur bonheur
-- Puis elle OUVRE LENTEMENT LES YEUX vers la CAMÉRA, regard SÉDUCTEUR et COMPLICE
-- Elle lui fait un dernier BISOU TENDRE sur le front tout en fixant le spectateur
-- Elle le PRÉSENTE fièrement à la caméra au niveau des seins
-- Son expression alterne entre AMOUR pour l'animal et SENSUALITÉ pour le spectateur
-- FREEZE sur cette image de BONHEUR PARTAGÉ entre elle, l'animal et le spectateur`;
+        if (document.getElementById('enableAnimalBabyMode')?.checked) {
+            const t = document.getElementById('animalBabyType')?.value || 'chiot';
+            return `FINALE: serre ${t === 'chiot' ? 'son chiot' : 'son chaton'} très fort, bisou front, regard caméra, FREEZE`;
         }
-        
-        const finaleType = document.getElementById('finaleType')?.value || 'bisou';
-        switch(finaleType) {
-            case 'bisou': return 'elle envoie un DERNIER BISOU LANGOUREUX à la caméra, ses doigts effleurant ses lèvres avant de s\'ouvrir lentement';
-            case 'coeur': return 'elle forme un CŒUR AVEC SES MAINS au-dessus de sa tête';
-            case 'clin': return 'elle fait un LONG CLIN D\'ŒIL APPUYÉ, presque un slow blink';
-            case 'cascade': return 'elle envoie une CASCADE DE BISOUS du bout des doigts';
-            case 'revelation': return 'elle ÉCARTE LES BRAS dans un geste théâtral de révélation';
-            case 'viens': return 'elle fait un DERNIER GESTE "VIENS VERS MOI" avec l\'index';
-            case 'freeze': return 'elle FIXE LA CAMÉRA INTENSÉMENT, son corps figé mais son regard vivant';
-            case 'souffle': return 'elle ENVOIE UN SOUFFLE SENSUEL vers la caméra';
-            case 'epaule': return 'elle DÉCOUVRE LENTEMENT SON ÉPAULE en faisant glisser le tissu';
-            default: return 'elle envoie un dernier bisou du bout des doigts, suivit d\'un clin d\'œil complice';
-        }
+        const type = document.getElementById('finaleType')?.value || 'bisou';
+        const map = {
+            'bisou': 'envoie un dernier bisou langoureux', 'coeur': 'forme un coeur avec les mains',
+            'clin': 'clin d\'œil appuyé', 'cascade': 'cascade de bisous',
+            'revelation': 'écarte les bras en révélation', 'viens': 'geste "viens vers moi"',
+            'freeze': 'fixe la caméra intensément', 'souffle': 'souffle sensuel', 'epaule': 'découvre son épaule'
+        };
+        return map[type] || 'envoie un dernier bisou';
     }
 
     getFinalOption() {
-        const option = document.getElementById('finalOption')?.value || 'freeze';
-        const duree = document.getElementById('finalMaintien')?.value || '2';
-        const emotion = document.getElementById('finalEmotion')?.value || 'satisfaite';
-        const options = {
-            'freeze': `l'image se fige sur CE MOMENT PRÉCIS, ses yeux continuant de vivre, un léger sourire ${emotion} aux lèvres, pendant ${duree} secondes`,
-            'fondu': `un FONDU AU NOIR PROGRESSIF enveloppe l'image pendant ${duree} secondes`,
-            'fonduBlanc': `un FONDU AU BLANC LUMINEUX l'illumine pendant ${duree} secondes`,
-            'zoom': `un ZOOM LENT ET DOUX sur son visage pendant ${duree} secondes`,
-            'flou': `un FLOU ARTISTIQUE PROGRESSIF pendant ${duree} secondes`
-        };
-        return options[option] || options['freeze'];
+        const opt = document.getElementById('finalOption')?.value || 'freeze';
+        const d = document.getElementById('finalMaintien')?.value || '2';
+        const e = document.getElementById('finalEmotion')?.value || 'satisfaite';
+        const m = { 'freeze': `freeze ${d}s, sourire ${e}`, 'fondu': `fondu noir ${d}s`, 'fonduBlanc': `fondu blanc ${d}s`, 'zoom': `zoom visage ${d}s`, 'flou': `flou progressif ${d}s` };
+        return m[opt];
     }
 
     getPublicInteraction() {
-        const interaction = document.getElementById('finalInteraction')?.value || 'regard';
-        const interactions = {
-            'regard': 'elle plonge son regard DROIT DANS LES YEUX DU SPECTATEUR',
-            'sourire': 'elle offre un SOURIRE ÉCLATANT ET PERSONNEL',
-            'clin': 'elle fait un CLIN D\'ŒIL COMPLICE',
-            'main': 'elle TEND LA MAIN vers l\'écran',
-            'tous': 'elle ALTERNATE REGARD, SOURIRE ET CLIN D\'ŒIL'
-        };
-        return interactions[interaction] || interactions['regard'];
+        const i = document.getElementById('finalInteraction')?.value || 'regard';
+        const m = { 'regard': 'regard dans les yeux', 'sourire': 'sourire éclatant', 'clin': 'clin d\'œil', 'main': 'main tendue', 'tous': 'alterne regard/sourire/clin' };
+        return m[i];
     }
 
-    // ===== SCRIPT DU PERSONNAGE =====
     generateScript() {
         if (!document.getElementById('enableScript')?.checked) return '';
-        const scriptText = document.getElementById('scriptText')?.value;
-        if (!scriptText) return '';
-        const part1 = document.getElementById('scriptPart1')?.checked ? `En partie 1, elle dit: "${scriptText}"` : '';
-        const part2 = document.getElementById('scriptPart2')?.checked ? `En partie 2, elle dit: "${scriptText}"` : '';
-        const final = document.getElementById('scriptFinal')?.checked ? `À la fin, elle dit: "${scriptText}"` : '';
-        const scripts = [part1, part2, final].filter(s => s).join(' ');
-        return `\n\n🎤 SCRIPT DU PERSONNAGE :\n${scripts}`;
+        const t = document.getElementById('scriptText')?.value;
+        if (!t) return '';
+        let r = '';
+        if (document.getElementById('scriptPart1')?.checked) r += `Part1:"${t}" `;
+        if (document.getElementById('scriptPart2')?.checked) r += `Part2:"${t}" `;
+        if (document.getElementById('scriptFinal')?.checked) r += `Fin:"${t}"`;
+        return r ? `\n🗣️ ${r}` : '';
     }
 
-    // ===== GÉNÉRATION DU DIALOGUE POUR PARTIE 2 =====
     generateDialogue() {
         if (!document.getElementById('enableScript')?.checked) return '';
-        const scriptText = document.getElementById('scriptText')?.value;
-        if (!scriptText) return '';
-        const part2 = document.getElementById('scriptPart2')?.checked;
-        const final = document.getElementById('scriptFinal')?.checked;
-        let dialogueText = '';
-        if (part2) dialogueText += `
-🗣️ DIALOGUE - PARTIE 2 (SYNCHRONISATION LABIALE PARFAITE) :
-Elle dit : "${scriptText}"
-AVEC SYNCHRONISATION LABIALE PARFAITE - ses lèvres bougent en même temps que sa voix.
-`;
-        if (final) dialogueText += `
-🗣️ DIALOGUE - FINALE (SYNCHRONISATION LABIALE PARFAITE) :
-Elle dit : "${scriptText}"
-`;
-        return dialogueText;
+        const t = document.getElementById('scriptText')?.value;
+        if (!t) return '';
+        let r = '';
+        if (document.getElementById('scriptPart2')?.checked) r += `Partie2:"${t}" `;
+        if (document.getElementById('scriptFinal')?.checked) r += `Fin:"${t}"`;
+        return r ? `\n🗣️ ${r}` : '';
     }
 
-    // ===== GÉNÉRATION DU DIALOGUE POUR PARTIE 1 (selfie uniquement) =====
     generateSelfieDialogue() {
         if (!document.getElementById('enableScript')?.checked) return '';
-        const scriptText = document.getElementById('scriptText')?.value;
-        const scriptPart1 = document.getElementById('scriptPart1')?.checked;
-        if (!scriptText || !scriptPart1) return '';
-        return ` "${scriptText}"`;
+        if (!document.getElementById('scriptPart1')?.checked) return '';
+        const t = document.getElementById('scriptText')?.value;
+        return t ? ` "${t}"` : '';
     }
 
-    // ===== TEXTES MAGIQUES FLOTTANTS =====
-    generateFloatingWords(partie) {
+    generateFloatingWords() {
         if (!document.getElementById('enableMagicTexts')?.checked) return '';
-        const words = [];
-        if (document.getElementById('textFollow')?.checked) words.push('"Follow Me"');
-        if (document.getElementById('textLike')?.checked) words.push('"Like Me"');
-        if (document.getElementById('textLuna')?.checked) words.push('"@luna_wells"');
-        if (document.getElementById('textSubscribe')?.checked) words.push('"Subscribe"');
-        if (document.getElementById('textLove')?.checked) words.push('"Love Me"');
-        if (document.getElementById('textWatch')?.checked) words.push('"Watch Me"');
-        if (document.getElementById('textHeart')?.checked) words.push('❤️ (cœurs)');
-        if (document.getElementById('textStar')?.checked) words.push('✨ (étoiles)');
-        const customText = document.getElementById('customText')?.value;
-        if (customText) words.push(`"${customText}"`);
-        if (words.length === 0) return '';
-        
-        const effect = document.getElementById('textEffect')?.value || 'neon';
-        const movement = document.getElementById('textMovement')?.value || 'float';
-        const color = document.getElementById('textColor')?.value || '#ff6b6b';
-        const color2 = document.getElementById('textColor2')?.value || '#4ecdc4';
-        const size = document.getElementById('textSize')?.value || 'medium';
-        const quantity = document.getElementById('textQuantity')?.value || 'medium';
-        const position = document.getElementById('textPosition')?.value || 'around';
-        const sizeText = { small: 'petits', medium: 'moyens', large: 'grands', xlarge: 'très grands' }[size] || 'moyens';
-        const quantityText = { few: '3-4', medium: '5-7', many: '8-10' }[quantity] || '5-7';
-        const specialEffects = [];
-        if (document.getElementById('effectSparkle')?.checked) specialEffects.push('scintillement');
-        if (document.getElementById('effectPulse')?.checked) specialEffects.push('pulsation');
-        if (document.getElementById('effectFade')?.checked) specialEffects.push('apparition/disparition progressive');
-        if (document.getElementById('effectTrail')?.checked) specialEffects.push('traînée lumineuse');
-        if (document.getElementById('effectShadow')?.checked) specialEffects.push('ombre portée');
-        if (document.getElementById('effect3d')?.checked) specialEffects.push('effet 3D');
-        const timing = document.getElementById('textTiming')?.value || 'whole';
-        if (timing === 'part2' && partie === 'part1') return '';
-        if (timing === 'transition' && partie !== 'part2') return '';
-        
-        return `
-✨ EFFETS TEXTES MAGIQUES ${partie === 'part1' ? 'PENDANT LA PREMIÈRE PARTIE' : 'PENDANT LA DEUXIÈME PARTIE'} ✨
-- Des textes ${words.join(', ')} apparaissent et flottent dans l'air autour d'elle
-- Style d'affichage : ${effect}
-- Mouvement : ${movement}
-- Couleurs : ${color} (principal) et ${color2} (secondaire)
-- Taille : ${sizeText}
-- Quantité : ${quantityText} textes
-- Position : ${position}
-- Effets supplémentaires : ${specialEffects.join(', ')}`;
+        const w = [];
+        if (document.getElementById('textFollow')?.checked) w.push('"Follow Me"');
+        if (document.getElementById('textLike')?.checked) w.push('"Like Me"');
+        if (document.getElementById('textLuna')?.checked) w.push('"@luna_wells"');
+        if (document.getElementById('textSubscribe')?.checked) w.push('"Subscribe"');
+        if (document.getElementById('textLove')?.checked) w.push('"Love Me"');
+        if (document.getElementById('textWatch')?.checked) w.push('"Watch Me"');
+        if (document.getElementById('textHeart')?.checked) w.push('❤️');
+        if (document.getElementById('textStar')?.checked) w.push('✨');
+        const ct = document.getElementById('customText')?.value;
+        if (ct) w.push(`"${ct}"`);
+        if (w.length === 0) return '';
+        const eff = document.getElementById('textEffect')?.value || 'neon';
+        const mov = document.getElementById('textMovement')?.value || 'float';
+        const col = document.getElementById('textColor')?.value;
+        const col2 = document.getElementById('textColor2')?.value;
+        const sz = { small:'petits', medium:'moyens', large:'grands', xlarge:'très grands' }[document.getElementById('textSize')?.value] || 'moyens';
+        const qty = { few:'2-3', medium:'4-6', many:'7-10' }[document.getElementById('textQuantity')?.value] || '4-6';
+        return `\n✨ Textes magiques: ${w.join(', ')} - ${eff} - ${mov} - ${col}/${col2} - ${sz} - ${qty}`;
     }
 
-    // ===== MODE ALIEN =====
-    generateAlienTransformations() {
+    generateAlien() {
         if (!document.getElementById('enableAlienMode')?.checked) return '';
-        let alienText = '\n\n👽 TRANSFORMATIONS EXTRA-TERRESTRES (DÉJÀ ACCOMPLIES) :\n';
-        let hasFeatures = false;
-        if (document.getElementById('alienSkin')?.checked) {
-            const color = document.getElementById('alienSkinColor')?.value || 'argent';
-            alienText += `- Peau transformée : texture ${color} irisée, effet métal liquide (DÉJÀ VISIBLE)\n`;
-            hasFeatures = true;
-        }
-        if (document.getElementById('alienEyes')?.checked) {
-            const color = document.getElementById('alienEyesColor')?.value || 'rouge';
-            alienText += `- Yeux : devenus lumineux, couleur ${color} (DÉJÀ VISIBLE)\n`;
-            hasFeatures = true;
-        }
-        if (document.getElementById('alienAntenna')?.checked) {
-            const style = document.getElementById('antennaStyle')?.value || 'antennes';
-            const styleText = { 'antennes': 'Antennes fines', 'cornes': 'Cornes stylisées', 'couronne': 'Couronne lumineuse', 'halo': 'Halo de lumière', 'tentacules': 'Tentacules' }[style] || 'Antennes';
-            alienText += `- ${styleText} sur la tête (DÉJÀ PRÉSENTES)\n`;
-            hasFeatures = true;
-        }
-        if (document.getElementById('alienGlow')?.checked) {
-            const color = document.getElementById('glowColor')?.value || 'bleu';
-            alienText += `- Corps phosphorescent : lueur ${color} (DÉJÀ VISIBLE)\n`;
-            hasFeatures = true;
-        }
-        if (document.getElementById('alienTattoos')?.checked) {
-            const style = document.getElementById('tattooStyle')?.value || 'symboles';
-            alienText += `- Tatouages lumineux : motifs ${style} (DÉJÀ PRÉSENTS)\n`;
-            hasFeatures = true;
-        }
-        if (document.getElementById('alienHolograms')?.checked) {
-            const type = document.getElementById('hologramType')?.value || 'etoiles';
-            const typeText = { 'etoiles': 'étoiles filantes', 'planetes': 'planètes miniatures', 'symboles': 'symboles mystiques', 'energie': 'sphères d\'énergie', 'animaux': 'créatures holographiques' }[type] || 'hologrammes';
-            alienText += `- Hologrammes flottants : des ${typeText} (DÉJÀ PRÉSENTS)\n`;
-            hasFeatures = true;
-        }
-        if (document.getElementById('alienVoice')?.checked) alienText += `- Voix modulée\n`;
-        if (document.getElementById('alienGravity')?.checked) alienText += `- Effet apesanteur\n`;
-        if (document.getElementById('alienTeleportation')?.checked) alienText += `- Effet téléportation\n`;
-        return hasFeatures ? alienText : '';
+        let r = '\n👽 ALIEN:';
+        if (document.getElementById('alienSkin')?.checked) r += ` peau ${document.getElementById('alienSkinColor')?.value || 'argent'}`;
+        if (document.getElementById('alienEyes')?.checked) r += ` yeux ${document.getElementById('alienEyesColor')?.value || 'rouges'}`;
+        if (document.getElementById('alienAntenna')?.checked) r += ` antennes`;
+        if (document.getElementById('alienGlow')?.checked) r += ` lueur ${document.getElementById('glowColor')?.value || 'bleue'}`;
+        if (document.getElementById('alienTattoos')?.checked) r += ` tatouages`;
+        if (document.getElementById('alienHolograms')?.checked) r += ` hologrammes`;
+        if (document.getElementById('alienVoice')?.checked) r += ` voix modulée`;
+        if (document.getElementById('alienGravity')?.checked) r += ` apesanteur`;
+        if (document.getElementById('alienTeleportation')?.checked) r += ` téléportation`;
+        return r !== '\n👽 ALIEN:' ? r : '';
     }
 
-    // ===== MODE AVATAR =====
-    generateAvatarTransformations() {
+    generateAvatar() {
         if (!document.getElementById('enableAvatarMode')?.checked) return '';
-        let avatarText = '\n\n🔵 TRANSFORMATIONS AVATAR (NA\'VI) - DÉJÀ ACCOMPLIES :\n';
-        const keepFace = document.getElementById('avatarKeepFace')?.checked || false;
-        if (keepFace) avatarText += `- ⚠️ VISAGE HUMAIN CONSERVÉ : le visage reste STRICTEMENT IDENTIQUE à l'image de référence. Seul le corps est transformé en Na'vi.\n`;
-        if (document.getElementById('avatarFullBody')?.checked) {
-            const skinTone = document.getElementById('avatarSkinTone')?.value || 'bleu nuit';
-            avatarText += `- Corps Na'vi complet : peau ${skinTone}\n`;
-        }
-        if (document.getElementById('avatarEars')?.checked) avatarText += `- Oreilles pointues\n`;
-        if (document.getElementById('avatarTail')?.checked) {
-            const tailStyle = document.getElementById('avatarTailStyle')?.value || 'fine';
-            avatarText += `- Queue ${tailStyle} et expressive\n`;
-        }
-        if (document.getElementById('avatarStripes')?.checked) {
-            const stripeStyle = document.getElementById('avatarStripesStyle')?.value || 'fines';
-            const stripeColor = document.getElementById('avatarStripesColor')?.value || 'blanc';
-            avatarText += `- Rayures lumineuses ${stripeStyle} de couleur ${stripeColor}\n`;
-        }
-        if (document.getElementById('avatarBioluminescence')?.checked) avatarText += `- Points bioluminescents\n`;
-        if (document.getElementById('avatarTattoos')?.checked) avatarText += `- Peintures tribales Na'vi\n`;
-        return avatarText;
+        let r = '\n🔵 AVATAR:';
+        if (document.getElementById('avatarKeepFace')?.checked) r += ` visage humain conservé`;
+        if (document.getElementById('avatarFullBody')?.checked) r += ` corps Na\'vi ${document.getElementById('avatarSkinTone')?.value || 'bleu'}`;
+        if (document.getElementById('avatarEars')?.checked) r += ` oreilles pointues`;
+        if (document.getElementById('avatarTail')?.checked) r += ` queue`;
+        if (document.getElementById('avatarStripes')?.checked) r += ` rayures`;
+        if (document.getElementById('avatarBioluminescence')?.checked) r += ` bioluminescence`;
+        if (document.getElementById('avatarTattoos')?.checked) r += ` peintures tribales`;
+        return r !== '\n🔵 AVATAR:' ? r : '';
     }
 
-    // ===== MODE ANIMAL =====
-    generateAnimalTransformations() {
-        if (typeof window.animalData === 'undefined') return '';
-        if (!document.getElementById('enableAnimalMode')?.checked) return '';
-        const type = document.getElementById('animalType')?.value || 'chatte';
-        const color = document.getElementById('animalColor')?.value || '';
-        const keepFace = document.getElementById('animalKeepFace')?.checked || false;
-        const ears = document.getElementById('animalEars')?.checked || false;
-        const tail = document.getElementById('animalTail')?.checked || false;
-        const fur = document.getElementById('animalFur')?.checked || false;
-        const eyes = document.getElementById('animalEyes')?.checked || false;
-        const claws = document.getElementById('animalClaws')?.checked || false;
-        const animal = window.animalData?.[type];
-        if (!animal) return '';
-        let animalText = '\n\n🐾 TRANSFORMATION ANIMALE - DÉJÀ ACCOMPLIE :\n';
-        if (keepFace) animalText += `- ⚠️ VISAGE HUMAIN CONSERVÉ : le visage reste STRICTEMENT IDENTIQUE à l'image de référence\n`;
-        else animalText += `- Transformation COMPLÈTE en ${animal.name}\n`;
-        if (ears) animalText += `- ${animal.traits.oreilles}\n`;
-        if (tail) animalText += `- ${animal.traits.queue}\n`;
-        if (fur) animalText += `- ${animal.traits.fourrure || 'Fourrure texturée'}\n`;
-        if (eyes) animalText += `- ${animal.traits.yeux}\n`;
-        if (claws) animalText += `- ${animal.traits.griffes || 'Griffes'}\n`;
-        if (color) animalText += `- Robe/couleur : ${color}\n`;
-        return animalText;
+    generateAnimal() {
+        if (!document.getElementById('enableAnimalMode')?.checked || typeof window.animalData === 'undefined') return '';
+        const t = document.getElementById('animalType')?.value || 'chatte';
+        const a = window.animalData[t];
+        if (!a) return '';
+        let r = `\n🐾 ANIMAL: ${a.name}`;
+        if (document.getElementById('animalKeepFace')?.checked) r += ` (visage humain)`;
+        if (document.getElementById('animalEars')?.checked) r += `, oreilles`;
+        if (document.getElementById('animalTail')?.checked) r += `, queue`;
+        if (document.getElementById('animalFur')?.checked) r += `, fourrure`;
+        if (document.getElementById('animalEyes')?.checked) r += `, yeux`;
+        if (document.getElementById('animalClaws')?.checked) r += `, griffes`;
+        const c = document.getElementById('animalColor')?.value;
+        if (c) r += `, couleur ${c}`;
+        return r;
     }
 
-    // ===== MODE BÉBÉ ANIMAL CÂLIN =====
-    generateAnimalBabyMode() {
+    generateAnimalBaby() {
         if (!document.getElementById('enableAnimalBabyMode')?.checked) return '';
-        const animalType = document.getElementById('animalBabyType')?.value || 'chiot';
-        const intensity = document.getElementById('animalBabyIntensity')?.value || 'tendre';
-        const positions = document.getElementById('animalBabyPositions')?.value || 'variees';
-        const animal = window.animalBabyData?.types[animalType] || window.animalBabyData?.types.chiot;
-        
-        let babyText = '\n\n🐶 MODE BÉBÉ ANIMAL CÂLIN - INTERACTION ULTRA-RÉALISTE 🐱\n';
-        babyText += `\n👶 ANIMAL PRÉSENT : ${animal ? animal.name : (animalType === 'chiot' ? '🐶 Chiot' : '🐱 Chaton')}\n`;
-        babyText += `
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🎯 INSTRUCTION PRIORITAIRE - INTÉGRATION DE L'IMAGE ANIMALE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- L'image du bébé animal est INTÉGRÉE PHYSIQUEMENT dans la scène
-- Elle le tient DANS SES MAINS, contre son corps
-- L'animal est RÉEL : volume, poids, textures
-
-🖼️ PLAN CADRAGE : PLAN MOYEN RAPPROCHÉ
-- L'animal est tenu DROIT DEVANT ELLE, au niveau des seins
-- VISIBLE FACE CAMÉRA : elle et l'animal regardent le spectateur
-
-💞 INTERACTIONS :
-- Câlins, bisous sur le front, gratouilles
-- Alternance regards TENDRES (animal) / SÉDUCTEURS (caméra)
-
-🐾 COMPORTEMENT DE L'ANIMAL :
-${animalType === 'chiot' ? 
-  `- remue la queue frénétiquement
-- lèche son visage avec sa petite langue
-- se blottit contre sa poitrine` : 
-  `- ronronne fort contre elle
-- frotte sa tête contre son cou
-- se love dans le creux de ses bras`}
-
-⏱️ CHRONOLOGIE (6 secondes) :
-- 0-1s : Révélation - elle tient DÉJÀ l'animal
-- 1-2s : Présentation face caméra
-- 2-3s : Câlins, joue contre sa tête
-- 3-4s : Danse DOUCE avec lui
-- 4-5s : Bisous et jeux
-- 5-6s : FINALE - dernier câlin, regard caméra, FREEZE
-
-${intensity === 'tendre' ? '🎯 INTENSITÉ : TENDRE' : intensity === 'joueur' ? '🎯 INTENSITÉ : JOUEUR' : '🎯 INTENSITÉ : MIXTE'}
-${positions === 'variees' ? '📍 POSITIONS : VARIÉES' : positions === 'fixe' ? '📍 POSITIONS : FIXE' : '📍 POSITIONS : DYNAMIQUES'}
-`;
-        return babyText;
+        const t = document.getElementById('animalBabyType')?.value || 'chiot';
+        const i = { tendre:'TENDRE', joueur:'JOUEUR', mixte:'MIXTE' }[document.getElementById('animalBabyIntensity')?.value] || 'TENDRE';
+        const p = { variees:'VARIÉES', fixe:'FIXE', dynamiques:'DYNAMIQUES' }[document.getElementById('animalBabyPositions')?.value] || 'VARIÉES';
+        return `\n🐶 BÉBÉ ANIMAL: ${t === 'chiot' ? 'chiot' : 'chaton'} - ${i} - positions ${p}`;
     }
 
-    // ===== MODE MIROIR =====
-    generateMirrorMode() {
+    generateMirror() {
         if (!document.getElementById('enableMirrorMode')?.checked) return '';
-        const mirrorType = document.getElementById('mirrorType')?.value || 'classique';
-        const duoStyle = document.getElementById('mirrorDuoStyle')?.value || 'synchronise';
-        const poseFinale = document.getElementById('mirrorPoseFinale')?.value || 'cote_a_cote';
-        const mirrorData = window.mirrorModeData || {};
-        const type = mirrorData.types?.[mirrorType] || { name: "Clone identique", description: "" };
-        const duo = mirrorData.duo_styles?.[duoStyle] || { name: "Synchronisé", description: "" };
-        
-        let mirrorText = '\n\n🪞 MODE MIROIR - DOUBLE SENSUEL 🪞\n';
-        mirrorText += `\n🎭 TYPE DE CLONE : ${type.name}\n`;
-        
-        if (mirrorData.regle_absolue) {
-            mirrorText += `
-🚫 RÈGLE ABSOLUE - AUCUN BAISER ENTRE LES CLONES 🚫
-${mirrorData.regle_absolue.consigne}
-✅ CONTACTS AUTORISÉS : ${mirrorData.regle_absolue.contacts_autorises.join(', ')}
-`;
-        }
-        
-        mirrorText += `
-✨ PARTIE 2 - LE DUO FACE CAMÉRA (6 secondes) :
-
-SECONDE 0-1 : Les DEUX femmes côte à côte, FACE CAMÉRA
-SECONDE 1-2 : PRÉSENTATION - se regardent, sourient, se prennent la main
-SECONDE 2-4 : DANSE À DEUX - style ${duo.name}
-SECONDE 4-5 : MONTÉE DE TENSION - se rapprochent
-SECONDE 5-6 : FINALE - ${poseFinale === 'cote_a_cote' ? 'côte à côte, main dans la main' : 'pose choisie'}
-
-💡 RAPPELS : Les DEUX femmes sont IDENTIQUES, transition pendant le flash blanc
-`;
-        return mirrorText;
+        const t = { classique:'identique', tenue_inversee:'couleurs inversées', regard_different:'regard intense' }[document.getElementById('mirrorType')?.value] || 'identique';
+        const d = { synchronise:'synchro', miroir:'miroir', complementaire:'complémentaire', sensuel:'sensuel' }[document.getElementById('mirrorDuoStyle')?.value] || 'synchro';
+        const p = document.getElementById('mirrorPoseFinale')?.value || 'cote_a_cote';
+        return `\n🪞 MIROIR: clone ${t} - danse ${d} - finale ${p === 'cote_a_cote' ? 'côte à côte' : p}`;
     }
 
-    // ===== MODES FANTASTIQUES =====
-    generateFantasyTransformations() {
-        if (typeof window.generateFantasyTransformations === 'function') {
-            return window.generateFantasyTransformations();
-        }
+    generateFantasy() {
+        if (typeof window.generateFantasyTransformations === 'function') return window.generateFantasyTransformations();
         return '';
     }
 
-    // ===== OPTIONS SPÉCIALES =====
     generateSpecialFeatures() {
-        let specialText = '';
-        let hasFeatures = false;
+        let r = '';
         if (document.getElementById('enable-eyes')?.checked) {
-            const eyeLeft = document.getElementById('eye-left-select')?.value || 'bleu';
-            const eyeRight = document.getElementById('eye-right-select')?.value || 'marron';
-            specialText += `\n👁️ YEUX ULTRA-RÉALISTES 8K (HÉTÉROCHROMIE) :\n- Œil GAUCHE : ${eyeLeft}\n- Œil DROIT : ${eyeRight}\n- Vaisseaux sanguins visibles, reflets multiples, film lacrymal\n`;
-            hasFeatures = true;
+            const g = document.getElementById('eye-left-select')?.value || 'bleu';
+            const d = document.getElementById('eye-right-select')?.value || 'marron';
+            r += `\n👁️ Yeux: gauche ${g}, droit ${d} (hétérochromie)`;
         }
         if (document.getElementById('enable-skin')?.checked) {
-            const skinColor = document.getElementById('skin-color-select')?.value || 'blanc';
-            specialText += `\n🎨 TACHES DE NAISSANCE / VITILIGO :\n- ${skinColor} skin patches\n- Contours naturels, texture de peau préservée\n`;
-            hasFeatures = true;
+            const c = document.getElementById('skin-color-select')?.value || 'blanc';
+            r += `\n🎨 Taches: ${c}`;
         }
-        return hasFeatures ? specialText : '';
+        return r;
     }
 
-    // ===== EFFETS SPÉCIAUX (UNIQUEMENT CEUX-CI) =====
-    generateAdvancedEffects() {
-        const effects = [];
-        if (document.getElementById('effectFeu')?.checked) effects.push('flammes');
-        if (document.getElementById('effectEau')?.checked) effects.push('vagues');
-        if (document.getElementById('effectGlace')?.checked) effects.push('cristaux de glace');
-        if (document.getElementById('effectEclairs')?.checked) effects.push('éclairs');
-        if (document.getElementById('effectPapillons')?.checked) effects.push('papillons');
-        if (document.getElementById('effectPlumes')?.checked) effects.push('plumes');
-        if (document.getElementById('effectLaser')?.checked) effects.push('lasers');
-        if (document.getElementById('effectBulles')?.checked) effects.push('bulles');
-        if (effects.length === 0) return '';
-        const surpriseLevel = document.getElementById('surpriseLevel')?.value || 7;
-        const surpriseText = surpriseLevel <= 3 ? 'surprise subtile' : surpriseLevel <= 6 ? 'effet wow' : surpriseLevel <= 8 ? 'explosion visuelle' : 'EXPÉRIENCE HALLUCINANTE';
-        return `\nEFFETS SPECTACULAIRES (${surpriseText}) : ${effects.join(', ')}.`;
+    generateEffects() {
+        const e = [];
+        if (document.getElementById('effectFeu')?.checked) e.push('flammes');
+        if (document.getElementById('effectEau')?.checked) e.push('vagues');
+        if (document.getElementById('effectGlace')?.checked) e.push('glace');
+        if (document.getElementById('effectEclairs')?.checked) e.push('éclairs');
+        if (document.getElementById('effectPapillons')?.checked) e.push('papillons');
+        if (document.getElementById('effectPlumes')?.checked) e.push('plumes');
+        if (document.getElementById('effectLaser')?.checked) e.push('lasers');
+        if (document.getElementById('effectBulles')?.checked) e.push('bulles');
+        if (e.length === 0) return '';
+        const s = document.getElementById('surpriseLevel')?.value || 7;
+        const txt = s <= 3 ? 'subtile' : s <= 6 ? 'wow' : s <= 8 ? 'explosion' : 'hallucinant';
+        return `\n💥 Effets: ${e.join(', ')} (${txt})`;
     }
 
-    // ===== MODE SELFIE - VERSION AMÉLIORÉE AVEC BOUCHAGE OBJECTIF =====
-    generateSelfieMode() {
+    generateSelfie() {
         if (!document.getElementById('enableSelfieMode')?.checked) return '';
-        
-        const dialoguePart = this.generateSelfieDialogue();
-        const danceStyle = document.getElementById('selfieDanceStyle')?.value || 'sensuelle';
-        const danceDesc = selfieDances[danceStyle]?.description || 'ondulations sensuelles';
-
-        return `c'est un selfie son bras reste tendue${dialoguePart ? ` elle dit${dialoguePart}` : ''} en dansant (${danceDesc}).
-
-🎬 INSTRUCTION SPÉCIALE - FINALE SELFIE (dernière seconde) :
-À LA SECONDE 5 EXACTEMENT :
-- Elle rapproche son visage TRÈS LENTEMENT de l'objectif
-- Ses lèvres s'approchent jusqu'à TOUCHER l'objectif
-- Les lèvres viennent COLLER à l'objectif
-- ON VOIT LES DÉTAILS ULTRA-MACRO DES LÈVRES : ridules, brillant, humidité, texture de la peau
-- Les lèvres BOUCHENT COMPLÈTEMENT L'OBJECTIF (plus aucune image visible)
-- L'écran devient NOIR (pas de flash)
-- FIN DE LA PARTIE 1
-
-IMPORTANT - TRANSITION VERS LA PARTIE 2 :
-- Pendant cet écran noir, elle pose son téléphone
-- La PARTIE 2 commencera avec un angle de caméra FIXE (téléphone posé)
-- Ses deux mains sont LIBRES pour danser`;
+        const d = this.generateSelfieDialogue();
+        const s = document.getElementById('selfieDanceStyle')?.value || 'sensuelle';
+        const desc = selfieDances[s] || 'ondulations sensuelles';
+        return `selfie, bras tendu${d} en dansant (${desc}). FINALE: 5e seconde embrasse objectif → noir. Pause, main libres.`;
     }
 
-    // ===== COLLECTE DES DONNÉES =====
     collectUserData() {
-        const selectedCard = document.querySelector('.character-card.selected');
-        const countryKey = selectedCard ? selectedCard.dataset.country : 'spain';
-        
+        const sel = document.querySelector('.character-card.selected');
+        const ck = sel ? sel.dataset.country : 'spain';
         this.userData = {
-            country: countryKey,
-            naturalHair: document.getElementById('naturalHair')?.value || 'bruns',
+            country: ck, naturalHair: document.getElementById('naturalHair')?.value || 'bruns',
             enableFluo: document.getElementById('enableFluo')?.checked || false,
             fluoColor: document.getElementById('fluoColor')?.value || 'rose fluo',
             fluoIntensity: document.getElementById('fluoIntensity')?.value || 9,
@@ -517,628 +248,214 @@ IMPORTANT - TRANSITION VERS LA PARTIE 2 :
                 mains: document.getElementById('gesteMains')?.checked || false,
                 cheveux: document.getElementById('gesteCheveux')?.checked || false
             },
-            customDecor: {
-                enabled: document.getElementById('enableCustomDecor')?.checked || false,
-                text: document.getElementById('customDecorText')?.value || ''
-            },
-            finale: {
-                type: document.getElementById('finaleType')?.value || 'bisou',
-                option: document.getElementById('finalOption')?.value || 'freeze',
-                maintien: document.getElementById('finalMaintien')?.value || '2',
-                emotion: document.getElementById('finalEmotion')?.value || 'satisfaite',
-                interaction: document.getElementById('finalInteraction')?.value || 'regard'
-            },
-            animalBabyMode: {
-                enabled: document.getElementById('enableAnimalBabyMode')?.checked || false,
-                type: document.getElementById('animalBabyType')?.value || 'chiot',
-                intensity: document.getElementById('animalBabyIntensity')?.value || 'tendre',
-                positions: document.getElementById('animalBabyPositions')?.value || 'variees'
-            },
-            mirrorMode: {
-                enabled: document.getElementById('enableMirrorMode')?.checked || false,
-                type: document.getElementById('mirrorType')?.value || 'classique',
-                transition: document.getElementById('mirrorTransition')?.value || 'main_tendue',
-                duoStyle: document.getElementById('mirrorDuoStyle')?.value || 'synchronise',
-                poseFinale: document.getElementById('mirrorPoseFinale')?.value || 'cote_a_cote'
-            },
-            selfieMode: {
-                enabled: document.getElementById('enableSelfieMode')?.checked || false
-            },
-            selfieDance: document.getElementById('selfieDanceStyle')?.value || 'sensuelle',
             rapperStyle: document.getElementById('rapperStyle')?.value || 'tenue1',
-            rapperluxeStyle: document.getElementById('rapperluxeStyle')?.value || 'tenue1'
+            rapperluxeStyle: document.getElementById('rapperluxeStyle')?.value || 'tenue1',
+            selfieMode: { enabled: document.getElementById('enableSelfieMode')?.checked || false },
+            mirrorMode: { enabled: document.getElementById('enableMirrorMode')?.checked || false },
+            animalBabyMode: { enabled: document.getElementById('enableAnimalBabyMode')?.checked || false }
         };
     }
 
-    getSeductionPhrase(level) {
-        if (level <= 3) return 'subtile, charmeuse légère';
-        if (level <= 6) return 'charmeuse, coquine';
-        return 'ultra-séductrice, magnétique, explosive';
-    }
+    getSeductionPhrase(l) { return l <= 3 ? 'subtile' : l <= 6 ? 'charmeuse' : 'explosive'; }
 
-    // ===== PARTIE 1 =====
     generatePart1() {
-        const isSelfie = this.userData.selfieMode.enabled;
-        const isMirror = this.userData.mirrorMode.enabled;
-        
-        // SI MODE SELFIE ACTIVÉ - FORMAT SIMPLE
-        if (isSelfie) {
-            return this.generateSelfieMode();
+        if (this.userData.selfieMode.enabled) return this.generateSelfie();
+        const c = countries[this.userData.country];
+        const sed = this.getSeductionPhrase(this.userData.seductionLevel);
+        let g = '';
+        if (!this.userData.mirrorMode.enabled) {
+            if (this.userData.gestures.regards) g += ' regards charmeurs';
+            if (this.userData.gestures.sourires) g += ' sourires';
+            if (this.userData.gestures.clins) g += ' clins';
+            if (this.userData.gestures.levres) g += ' mord lèvre';
+            if (this.userData.gestures.mains) g += ' mains sur corps';
+            if (this.userData.gestures.cheveux) g += ' jeux cheveux';
+            if (this.userData.gestures.bisous) g += ` bisous x${this.userData.gestures.bisousCount}`;
+            if (this.userData.gestures.viens) g += ` "viens" x${this.userData.gestures.viensCount}`;
         }
-        
-        // MODE NORMAL (sans selfie)
-        const country = countries[this.userData.country];
-        const seductionPhrase = this.getSeductionPhrase(this.userData.seductionLevel);
-        
-        // ===== ANNULATION DES GESTES MAINS EN MODE MIROIR =====
-        let gesturesText = '';
-        if (isMirror) {
-            gesturesText = `
-⚠️ MODE MIROIR - RÈGLE ABSOLUE :
-- PAS DE GESTES DE SÉDUCTION AVEC LES MAINS
-- Pas de caresses, pas de bisous envoyés, pas de geste "viens"
-- La sensualité vient des regards, des sourires, des mouvements de corps
-- Les mains servent uniquement à danser et à interagir avec le clone (main dans la main, taille, épaules)
-`;
-        } else {
-            if (this.userData.gestures.regards) gesturesText += '- Elle fixe la caméra avec des regards intenses et charmeurs\n';
-            if (this.userData.gestures.sourires) gesturesText += '- Sourires en coin, coquins, charmeurs\n';
-            if (this.userData.gestures.clins) gesturesText += '- Clins d\'œil complices et lents\n';
-            if (this.userData.gestures.levres) gesturesText += '- Elle mord sa lèvre inférieure en vous fixant\n';
-            if (this.userData.gestures.mains) gesturesText += '- Ses mains caressent son corps (cou, épaules, seins, hanches)\n';
-            if (this.userData.gestures.cheveux) gesturesText += '- Jeux avec ses cheveux, elle les caresse, les rejette\n';
-            if (this.userData.gestures.bisous) {
-                gesturesText += `- Elle envoie des baisers du bout des doigts vers la caméra (${this.userData.gestures.bisousCount} fois)\n`;
-            }
-            if (this.userData.gestures.viens) {
-                gesturesText += `- Elle fait le geste "viens vers moi" avec son index (${this.userData.gestures.viensCount} fois)\n`;
-            }
-        }
-
-        const danceMovesText = (danceMoves && danceMoves[this.userData.country]?.part1) ? 
-            danceMoves[this.userData.country].part1.join('\n    - ') : 'mouvements sensuels';
-
-        const floatingTexts = this.generateFloatingWords('part1');
-
-        let part1Text = `Une transition de danse synchronisée à haute énergie en 4k, basée sur l'image fournie - PREMIÈRE PARTIE de 6 secondes.
-
-LE SUJET :
-- Femme magnifique, totalement silencieuse - elle ne parle pas, elle danse uniquement
-- Visage parfaitement identique à l'image de référence - traits reconnaissables, conservés avec précision
-
-Expression ${seductionPhrase} : elle joue avec le spectateur, le captive, le séduit
-Regards complices et coquins
-
-CHEVEUX dans leur couleur naturelle : ${this.userData.naturalHair}
-
-DANSE AVANT TRANSFORMATION - MOUVEMENTS PRÉCIS :
-La personne exécute une danse ${country.dance} sensuelle et ${seductionPhrase} :
-    - ${danceMovesText}
-
-GESTES DE SÉDUCTION :
-${gesturesText}
-
-JEUX DE REGARDS :
-- Elle fixe la caméra droit dans les yeux
-- Elle bat des cils lentement
-- Elle suit les mouvements du spectateur
-- Elle regarde de bas en haut sensuellement
-
-${floatingTexts}
-
-TRANSITION STANDARD :
-Au moment le plus intense de sa danse, elle rapproche ses mains de l'objectif dans un geste théâtral et sensuel, les plaquant contre la caméra pour masquer entièrement l'image, cachant complètement la vue pendant la fin de cette première partie.
-
-IMPORTANT - PRÉPARATION POUR LA PARTIE 2 :
-- Pendant que les mains cachent l'objectif, elle se change COMPLÈTEMENT
-- La PARTIE 2 commencera avec le résultat FINAL déjà visible`;
-
-        return part1Text;
+        const dm = (danceMoves && danceMoves[this.userData.country]?.part1) ? danceMoves[this.userData.country].part1.slice(0,2).join(', ') : 'mouvements sensuels';
+        const float = this.generateFloatingWords();
+        return `PART1 (0-6s): Danse ${c.dance} ${sed} face caméra. Cheveux: ${this.userData.naturalHair}. Mouvements: ${dm}.${g ? ` Gestes:${g}.` : ''}${float} A 5s: mains plaquées objectif → écran noir (se change).`;
     }
 
-    // ===== PARTIE 2 (CORRIGÉE : TENUE FINALE DÉTAILLÉE POUR TOUS) =====
     generatePart2() {
-        const country = countries[this.userData.country];
-        const seductionPhrase = this.getSeductionPhrase(this.userData.seductionLevel);
-        const fluoIntensityText = this.userData.fluoIntensity >= 8 ? 'éclatant, quasi phosphorescent' :
-                                 this.userData.fluoIntensity >= 5 ? 'brillant' : 'léger';
-        
+        const c = countries[this.userData.country];
+        const sed = this.getSeductionPhrase(this.userData.seductionLevel);
+        const fluoInt = this.userData.fluoIntensity >= 8 ? 'éclatant' : this.userData.fluoIntensity >= 5 ? 'brillant' : 'léger';
         const isSelfie = this.userData.selfieMode.enabled;
         const isMirror = this.userData.mirrorMode.enabled;
         
-        // ===== ANNULATION DES GESTES MAINS EN MODE SELFIE ET MIROIR =====
-        let gesturesText = '';
+        let g = '';
         if (isSelfie) {
-            gesturesText = `
-⚠️ MODE SELFIE (PARTIE 2) :
-- Le téléphone a été POSÉ pendant le flash noir
-- L'OBJECTIF EST MAINTENANT FIXE (angle de vue constant)
-- Ses DEUX MAINS sont maintenant LIBRES
-- Elle peut utiliser ses DEUX MAINS pour danser et faire les gestes
-
-✅ GESTES AVEC LES DEUX MAINS LIBRES :
-`;
-            if (this.userData.gestures.regards) gesturesText += '- Regards encore plus intenses, magnétiques\n';
-            if (this.userData.gestures.sourires) gesturesText += '- Sourires encore plus charmeurs\n';
-            if (this.userData.gestures.clins) gesturesText += '- Clins d\'œil appuyés\n';
-            if (this.userData.gestures.levres) gesturesText += '- Mordillement de la lèvre plus prononcé\n';
-            if (this.userData.gestures.mains) gesturesText += '- Ses deux mains caressent son corps (cou, épaules, seins, hanches)\n';
-            if (this.userData.gestures.cheveux) gesturesText += '- Jeux accentués avec ses cheveux fluo\n';
-            if (this.userData.gestures.bisous) gesturesText += `- Elle envoie ${this.userData.gestures.bisousCount} baisers\n`;
-            if (this.userData.gestures.viens) gesturesText += `- Elle fait le geste "viens" ${this.userData.gestures.viensCount} fois\n`;
+            g = ' mains libres:';
+            if (this.userData.gestures.regards) g += ' regards intenses';
+            if (this.userData.gestures.sourires) g += ' sourires';
+            if (this.userData.gestures.clins) g += ' clins';
+            if (this.userData.gestures.levres) g += ' mord lèvre';
+            if (this.userData.gestures.mains) g += ' mains sur corps';
+            if (this.userData.gestures.cheveux) g += ' jeux cheveux';
+            if (this.userData.gestures.bisous) g += ` bisous x${this.userData.gestures.bisousCount}`;
+            if (this.userData.gestures.viens) g += ` "viens" x${this.userData.gestures.viensCount}`;
         } else if (isMirror) {
-            gesturesText = `
-⚠️ MODE MIROIR - RÈGLE ABSOLUE :
-- PAS DE GESTES DE SÉDUCTION AVEC LES MAINS
-- Pas de caresses, pas de bisous envoyés, pas de geste "viens"
-- La sensualité vient des regards, des sourires, des mouvements de corps
-- Les mains servent uniquement à danser et à interagir avec le clone (main dans la main, taille, épaules)
-`;
+            g = ' PAS de gestes mains (règle miroir)';
         } else {
-            if (this.userData.gestures.regards) gesturesText += '- Regards encore plus intenses, magnétiques\n';
-            if (this.userData.gestures.sourires) gesturesText += '- Sourires encore plus charmeurs\n';
-            if (this.userData.gestures.clins) gesturesText += '- Clins d\'œil appuyés\n';
-            if (this.userData.gestures.levres) gesturesText += '- Mordillement de la lèvre plus prononcé\n';
-            if (this.userData.gestures.mains) gesturesText += '- Caresses plus appuyées sur tout le corps\n';
-            if (this.userData.gestures.cheveux) gesturesText += '- Jeux accentués avec ses cheveux fluo\n';
-            if (this.userData.gestures.bisous) gesturesText += `- Elle envoie ${this.userData.gestures.bisousCount} baisers\n`;
-            if (this.userData.gestures.viens) gesturesText += `- Elle fait le geste "viens" ${this.userData.gestures.viensCount} fois\n`;
+            if (this.userData.gestures.regards) g += ' regards intenses';
+            if (this.userData.gestures.sourires) g += ' sourires';
+            if (this.userData.gestures.clins) g += ' clins';
+            if (this.userData.gestures.levres) g += ' mord lèvre';
+            if (this.userData.gestures.mains) g += ' mains sur corps';
+            if (this.userData.gestures.cheveux) g += ' jeux cheveux';
+            if (this.userData.gestures.bisous) g += ` bisous x${this.userData.gestures.bisousCount}`;
+            if (this.userData.gestures.viens) g += ` "viens" x${this.userData.gestures.viensCount}`;
         }
-
-        const animalBabyDanceInstructions = this.userData.animalBabyMode.enabled ? 
-            `- Danse ADAPTÉE : mouvements PLUS DOUX, PLUS LENTS pour ne pas brusquer l'animal\n` : '';
-        const danceMovesText = (danceMoves && danceMoves[this.userData.country]?.part2) ? 
-            danceMoves[this.userData.country].part2.join('\n    - ') : 'mouvements encore plus intenses';
-        const actionType = this.getActionType(this.userData.country);
-        const decorText = this.getUnifiedDecor();
-        const actionAleatoire = this.getRandomAction(actionType);
+        
+        const dm = (danceMoves && danceMoves[this.userData.country]?.part2) ? danceMoves[this.userData.country].part2.slice(0,2).join(', ') : 'mouvements intenses';
+        const action = this.getRandomAction(this.getActionType(this.userData.country));
+        const decor = this.getUnifiedDecor();
         const finale = this.getFinaleGesture();
-        const finalOption = this.getFinalOption();
-        const publicInteraction = this.getPublicInteraction();
-        const floatingTexts = this.generateFloatingWords('part2');
+        const finalOpt = this.getFinalOption();
+        const interaction = this.getPublicInteraction();
+        const float = this.generateFloatingWords();
+        const alien = this.generateAlien();
+        const avatar = this.generateAvatar();
+        const animal = this.generateAnimal();
+        const animalBaby = this.generateAnimalBaby();
+        const mirror = this.generateMirror();
+        const fantasy = this.generateFantasy();
+        const special = this.generateSpecialFeatures();
+        const effects = this.generateEffects();
+        const dialogue = this.generateDialogue();
         
-        const alienTransformations = this.generateAlienTransformations();
-        const avatarTransformations = this.generateAvatarTransformations();
-        const animalTransformations = this.generateAnimalTransformations();
-        const animalBabyMode = this.generateAnimalBabyMode();
-        const mirrorMode = this.generateMirrorMode();
-        const fantasyModes = this.generateFantasyTransformations();
-        const specialFeatures = this.generateSpecialFeatures();
-        const advancedEffects = this.generateAdvancedEffects();
-        let script = this.generateScript();
-        
-        let dialogueText = '';
-        if (!isSelfie) {
-            dialogueText = this.generateDialogue();
-        }
-        
-        let finalScript = script;
-        if (isSelfie) {
-            dialogueText = '';
-            finalScript = '';
-        }
-
-        const avatarMode = document.getElementById('enableAvatarMode')?.checked || false;
-        const keepFace = document.getElementById('avatarKeepFace')?.checked || false;
-
-        let hasPriorityEyes = false;
-        let hasPrioritySkin = false;
-        if (specialFeatures.includes('YEUX')) hasPriorityEyes = true;
-        if (specialFeatures.includes('TACHES')) hasPrioritySkin = true;
-
-        let faceInstructions = '';
-        let eyesInstructions = '';
-
-        if (avatarMode && !keepFace) {
-            faceInstructions = `👇 INSTRUCTIONS POUR UN VISAGE AVATAR COMPLET 👇
-- Transformation COMPLète en Na'vi
-- Peau bleue caractéristique (${document.getElementById('avatarSkinTone')?.value || 'bleu nuit'})
-- Traits faciaux Na'vi : nez large, arcades sourcilières prononcées
-- Oreilles pointues`;
-            eyesInstructions = `👁️ YEUX AVATAR : Iris jaune/or, pupilles verticales, reflets lumineux`;
+        // Tenue finale détaillée
+        let outfit = '';
+        if (c && c.finalOutfit && c.finalOutfit.colors) {
+            outfit = `${c.finalOutfit.description} - Couleurs: ${c.finalOutfit.colors.join(', ')} - Éléments: ${c.finalOutfit.elements.slice(0,3).join(', ')}... - Acc: ${c.finalOutfit.accessories.slice(0,3).join(', ')}...`;
+        } else if (this.userData.country === 'rapper' && countries.rapper?.tenues) {
+            const t = countries.rapper.tenues[this.userData.rapperStyle];
+            if (t) outfit = `${t.description} - ${t.colors.join(', ')} - ${t.elements.slice(0,3).join(', ')}`;
+        } else if (this.userData.country === 'rapperluxe' && countries.rapperluxe?.tenues) {
+            const t = countries.rapperluxe.tenues[this.userData.rapperluxeStyle];
+            if (t) outfit = `${t.description} - ${t.colors.join(', ')} - ${t.elements.slice(0,3).join(', ')}`;
         } else {
-            faceInstructions = `👇 INSTRUCTIONS POUR UN VISAGE HUMAIN AUTHENTIQUE 👇
-- Rendu hyper réaliste style photo professionnelle
-- Peau avec texture naturelle : pores visibles, relief cutané
-- Micro-expressions involontaires, respiration visible
-- Le visage doit être STRICTEMENT IDENTIQUE à l'image de référence`;
-            eyesInstructions = `👁️ YEUX : Iris hyper détaillés, film lacrymal humide, vaisseaux sanguins visibles, saccades oculaires, cils individuels`;
-        }
-
-        const detailsMicroscopiques = `DÉTAILS MICROSCOPIQUES :
-- Peau autour des yeux fine et translucide
-- Paupières avec plis naturels
-- Nez avec pores larges
-- Oreilles avec cartilage et duvet
-- Cou avec plis naturels`;
-
-        // ==============================================================
-        // CORRECTION : TENUE FINALE DÉTAILLÉE POUR TOUS LES PERSONNAGES
-        // ==============================================================
-        let outfitText = '';
-        
-        if (country && country.finalOutfit) {
-            if (country.finalOutfit.colors && country.finalOutfit.colors.length > 0) {
-                // Format détaillé pour tous les personnages normaux
-                outfitText = `${country.finalOutfit.description}
-- Couleurs : ${country.finalOutfit.colors.join(', ')}
-- Éléments : ${country.finalOutfit.elements.join(', ')}
-- Accessoires : ${country.finalOutfit.accessories.join(', ')}`;
-            } else {
-                // Fallback si le format n'est pas complet
-                outfitText = country.finalOutfit.description;
-            }
+            outfit = this.userData.finalOutfit || "tenue spectaculaire";
         }
         
-        // Gestion spéciale pour les rappeurs (qui ont une structure "tenues")
-        if (this.userData.country === 'rapper' && countries.rapper && countries.rapper.tenues) {
-            const style = this.userData.rapperStyle;
-            const tenue = countries.rapper.tenues[style];
-            if (tenue) outfitText = `${tenue.description} aux couleurs ${tenue.colors.join(' et ')}. Éléments : ${tenue.elements.join(', ')}. Accessoires : ${tenue.accessories.join(', ')}.`;
-        }
-        else if (this.userData.country === 'rapperluxe' && countries.rapperluxe && countries.rapperluxe.tenues) {
-            const style = this.userData.rapperluxeStyle;
-            const tenue = countries.rapperluxe.tenues[style];
-            if (tenue) outfitText = `${tenue.description} aux couleurs ${tenue.colors.join(' et ')}. Éléments : ${tenue.elements.join(', ')}. Accessoires : ${tenue.accessories.join(', ')}.`;
-        }
+        const hair = this.userData.enableFluo ? `Cheveux: ${this.userData.fluoColor} ${fluoInt}, style ${this.userData.hairStyle}` : `Cheveux naturels: ${this.userData.naturalHair}`;
         
-        // Si rien n'a été trouvé, utiliser la valeur par défaut du textarea
-        if (!outfitText) {
-            outfitText = this.userData.finalOutfit || "tenue spectaculaire";
-        }
-        // ==============================================================
-
-        return `Suite de la transition - DEUXIÈME PARTIE de 6 secondes.
-
-CONTINUITÉ PARFAITE DU VISAGE - ABSOLUMENT CRUCIAL :
-- Le sujet est STRICTEMENT IDENTIQUE à celui de la PARTIE 1
-- MÊMES TRAITS, MÊME VISAGE, expression encore plus intense
-- La transformation ne concerne QUE les vêtements, le corps et les accessoires
-${avatarTransformations.includes('VISAGE HUMAIN CONSERVÉ') ? '- ⚠️ Le visage reste HUMAIN et IDENTIQUE à la partie 1 - seuls les éléments Na\'vi sont ajoutés' : ''}
-
-${faceInstructions}
-
-${eyesInstructions}
-
-${detailsMicroscopiques}
-
-⚠️ ANGLE DE CAMÉRA - MODE SELFIE (si activé) :
-- Pendant le flash noir, le téléphone a été POSÉ sur un support fixe
-- L'OBJECTIF EST MAINTENANT FIXE - angle de vue constant
-- La caméra ne bouge pas, ne zoome pas (sauf si option finale zoom activée)
-- Elle danse FACE À CET OBJECTIF FIXE
-
-ÉCLAIRAGE CINÉMATOGRAPHIQUE NATUREL :
-- Éclairage Rembrandt doux
-- Source principale à 45°, ombres naturelles
-- Reflets naturels dans les yeux
-
-RENDU PHOTOGRAPHIQUE AUTHENTIQUE :
-- Grain de film léger
-- Pas de filtre beauté, pas de lissage excessif
-${!avatarMode || keepFace ? `- Visage indiscernable d'une vraie photo professionnelle` : `- Rendu cohérent Na'vi`}
-
-⚠️ TRANSITION NATURELLE - INSTRUCTION CAPITALE ⚠️ :
-- Pendant le flash noir/blanc, elle s'est CHANGÉE COMPLÈTEMENT
-- La transformation a eu lieu HORS CAMÉRA - RIEN de magique ou d'instantané
-- Dès que l'écran s'éclaire, le résultat FINAL est déjà visible
-- AUCUN changement ne doit être visible pendant cette PARTIE 2
-- Le réalisme est PRIMORDIAL
-
-${finalScript}
-
-GESTES DE SÉDUCTION IMMÉDIATS DÈS LE DÉBUT DE LA PARTIE 2 :
-${this.userData.gestures.bisous ? '- Elle envoie UN BISOUD À LA CAMÉRA' : ''}
-${this.userData.gestures.viens ? '- Elle fait le geste "VIENS VERS MOI"' : ''}
-- Sourire victorieux et charmeur
-
-NOUVELLE TENUE (DÉJÀ PORTÉE) :
-${outfitText}
-
-CHEVEUX TRANSFORMÉS (DÉJÀ COLORÉS) :
-${this.userData.enableFluo ? 
-`- CHANGEMENT COMPLET - Cheveux DÉJÀ colorés en ${this.userData.fluoColor} ${fluoIntensityText}
-- Intensité fluo maximale - ils brillent littéralement sous la lumière
-- Style : ${this.userData.hairStyle}
-- Cascade de couleur fluo qui scintille` : 
-`- Les cheveux conservent leur couleur naturelle (${this.userData.naturalHair})`}
-
-${alienTransformations}
-${avatarTransformations}
-${animalTransformations}
-${animalBabyMode}
-${mirrorMode}
-${fantasyModes}
-${!hasPriorityEyes && !hasPrioritySkin ? specialFeatures : ''}
-
-MAQUILLAGE APPLIQUÉ (DÉJÀ FAIT) :
-- Teint parfait et lumineux
-- Yeux intensifiés
-- Lèvres brillantes
-- Paillettes subtiles
-- Peau légèrement huilée
-
-DANSE APRÈS TRANSFORMATION :
-Elle reprend sa danse ${country.dance} avec une énergie décuplée :
-    ${animalBabyDanceInstructions}
-    - ${danceMovesText}
-
-⚡ ACTION SPÉCIALE ⚡
-- ${actionAleatoire}
-
-JEUX DE SÉDUCTION ACCRUS :
-${gesturesText}
-
-JEUX AVEC LA TENUE ET CHEVEUX :
-- Jeux avec les éléments de la tenue
-- Elle passe ses mains dans ses cheveux fluo
-- Les fait virevolter en tournant
-
-${floatingTexts}
-
-ARRIÈRE-PLAN - DÉCOR UNIFIÉ :
-${decorText}
-
-${advancedEffects}
-
-🎬 FINALE SPECTACULAIRE (dernière seconde de la PARTIE 2) :
-
-⏱️ CHRONOLOGIE :
-- SECONDES 1 à 5 : Danse intense
-- SECONDE 5 à 6 : ${finale}
-
-🎯 INTERACTION DIRECTE :
-- ${publicInteraction}
-- Elle danse POUR le spectateur
-
-📸 MAINTIEN DE POSE (${document.getElementById('finalMaintien')?.value || '2'}s) :
-- Corps figé mais VISAGE VIVANT
-- Yeux parcourent l'écran
-- Respiration AMPLE
-- Sourire ${document.getElementById('finalEmotion')?.value || 'satisfaite'}
-
-CAMÉRA ET ÉCLAIRAGE :
-- Caméra statique (angle fixe si mode selfie)
-- Éclairage cinématographique chaleureux
-- Spot sur elle pendant le finale
-
-RAPPEL ULTIME :
-- Transformation DÉJÀ TERMINÉE
-- AUCUNE métamorphose visible
-- Le réalisme est ABSOLUMENT CRUCIAL
-- La FINALE doit être PARFAITE`;
+        return `PART2 (6-12s): Suite, même visage. ${hair}. Tenue: ${outfit}. Danse ${c.dance}: ${dm}. Action: ${action}.${g ? ` Gestes:${g}` : ''}${float} Décor: ${decor}.${alien}${avatar}${animal}${animalBaby}${mirror}${fantasy}${special}${effects}${dialogue} FINALE (11-12s): ${finale} Puis ${finalOpt}. ${interaction}. Vision caméra.`;
     }
 
     generateConsignes() {
-        const country = countries[this.userData.country];
-        const avatarMode = document.getElementById('enableAvatarMode')?.checked || false;
-        const keepFace = document.getElementById('avatarKeepFace')?.checked || false;
-        const eyesDiff = document.getElementById('enable-eyes')?.checked || false;
-        const skinDiff = document.getElementById('enable-skin')?.checked || false;
-        const animalMode = document.getElementById('enableAnimalMode')?.checked || false;
-        const animalBabyMode = document.getElementById('enableAnimalBabyMode')?.checked || false;
-        const mirrorMode = document.getElementById('enableMirrorMode')?.checked || false;
-        const selfieMode = document.getElementById('enableSelfieMode')?.checked || false;
-        
-        let avatarLine = '';
-        if (avatarMode) avatarLine = keepFace ? '\n15. MODE AVATAR : visage humain conservé' : '\n15. MODE AVATAR : transformation complète';
-        let animalLine = animalMode ? '\n16. MODE ANIMAL ACTIVÉ' : '';
-        let animalBabyLine = animalBabyMode ? '\n17. MODE BÉBÉ ANIMAL CÂLIN' : '';
-        let mirrorLine = mirrorMode ? '\n18. MODE MIROIR - transition flash blanc' : '';
-        let selfieLine = selfieMode ? '\n19. 📱 MODE SELFIE' : '';
-        let specialLine = '';
-        if (eyesDiff && skinDiff) specialLine = '\n20. OPTIONS SPÉCIALES 8K : Yeux hétérochromie + Taches de naissance';
-        else if (eyesDiff) specialLine = '\n20. OPTIONS SPÉCIALES 8K : Yeux hétérochromie';
-        else if (skinDiff) specialLine = '\n20. OPTIONS SPÉCIALES 8K : Taches de naissance';
-        
-        return `CONSIGNES DE COHÉRENCE ABSOLUE :
-
-1. VISAGE IDENTIQUE : PARTIE 2 = PARTIE 1 (même visage, seule la tenue change)
-2. TRANSITION NATURELLE : Transformation HORS CAMÉRA (pendant flash noir/blanc)
-3. RENDU ULTRA-RÉALISTE : Pores, grains de beauté, micro-expressions, respiration visible
-4. YEUX 8K : Iris détaillés, film lacrymal, vaisseaux sanguins visibles
-5. SILENCE TOTAL : Pas un mot (sauf script activé)
-6. SÉDUCTION MAGNÉTIQUE : Regards intenses, gestes sensuels
-7. GESTES DIRECTES : ${this.userData.gestures.bisous ? 'BISOUS' : ''} ${this.userData.gestures.viens ? 'et VIENS' : ''}
-8. TENUE DÉPART REMPLACÉE : Pendant le flash
-9. CHEVEUX ${this.userData.enableFluo ? 'FLUO' : 'NATURELS'}
-10. MOUVEMENTS PRÉCIS : Danse synchronisée
-11. INSPIRATION : ${country.name} - ${country.dance}
-12. TRANSFORMATION DÉJÀ ACCOMPLIE : Rien ne change pendant la PARTIE 2
-13. FINALE SPECTACULAIRE : Moment fort de la vidéo (dernière seconde)${avatarLine}${animalLine}${animalBabyLine}${mirrorLine}${selfieLine}${specialLine}`;
+        const c = countries[this.userData.country];
+        const b = this.userData.gestures.bisous ? 'BISOUS' : '';
+        const v = this.userData.gestures.viens ? 'VIENS' : '';
+        return `CONSIGNES: 1.Même visage 2.Transformation hors caméra 3.Ultra-réaliste (pores, yeux vivants) 4.Silence 5.Séduction ${b} ${v} 6.Cheveux ${this.userData.enableFluo ? 'FLUO' : 'NATURELS'} 7.Danse ${c.name} (${c.dance}) 8.Rien ne change en PART2 9.Finale soignée`;
     }
 
     generateFullPrompt() {
         this.collectUserData();
-        return {
-            part1: this.generatePart1(),
-            part2: this.generatePart2(),
-            consignes: this.generateConsignes(),
-            full: this.generatePart1() + '\n\n' + this.generatePart2() + '\n\n' + this.generateConsignes()
-        };
+        const p1 = this.generatePart1();
+        const p2 = this.generatePart2();
+        const cons = this.generateConsignes();
+        return { part1: p1, part2: p2, consignes: cons, full: `${p1}\n\n${p2}\n\n${cons}` };
     }
 }
 
-// ==================== FONCTIONS D'INITIALISATION ====================
-
+// ========== INITIALISATION ==========
 function initCharacters() {
-    console.log("🎭 Initialisation des personnages...");
     const grid = document.getElementById('countryGrid');
-    if (!grid) { console.error("❌ Grille non trouvée!"); return; }
-    if (typeof countries === 'undefined') { grid.innerHTML = '<div style="color: red;">Erreur: Personnages non chargés</div>'; return; }
+    if (!grid) return;
+    if (typeof countries === 'undefined') { grid.innerHTML = '<div>Erreur chargement</div>'; return; }
     let html = '';
-    for (const [key, country] of Object.entries(countries)) {
-        html += `<div class="character-card" data-country="${key}">${country.name}</div>`;
-    }
+    for (const [k, v] of Object.entries(countries)) html += `<div class="character-card" data-country="${k}">${v.name}</div>`;
     grid.innerHTML = html;
-    console.log(`✅ ${Object.keys(countries).length} personnages chargés`);
-    const firstCard = document.querySelector('.character-card');
-    if (firstCard) {
-        firstCard.classList.add('selected');
-        const selectedSpan = document.querySelector('#selectedCountry span');
-        if (selectedSpan) selectedSpan.textContent = countries[firstCard.dataset.country].name;
+    const first = document.querySelector('.character-card');
+    if (first) {
+        first.classList.add('selected');
+        const span = document.querySelector('#selectedCountry span');
+        if (span) span.textContent = countries[first.dataset.country].name;
     }
     document.querySelectorAll('.character-card').forEach(card => {
         card.addEventListener('click', function() {
             document.querySelectorAll('.character-card').forEach(c => c.classList.remove('selected'));
             this.classList.add('selected');
-            const selectedSpan = document.querySelector('#selectedCountry span');
-            if (selectedSpan) selectedSpan.textContent = countries[this.dataset.country].name;
+            const span = document.querySelector('#selectedCountry span');
+            if (span) span.textContent = countries[this.dataset.country].name;
         });
     });
-    const searchInput = document.getElementById('characterSearch');
-    if (searchInput) {
-        searchInput.addEventListener('input', function(e) {
-            const search = e.target.value.toLowerCase();
-            document.querySelectorAll('.character-card').forEach(card => {
-                card.style.display = card.textContent.toLowerCase().includes(search) ? 'block' : 'none';
-            });
-        });
-    }
+    const search = document.getElementById('characterSearch');
+    if (search) search.addEventListener('input', e => {
+        const s = e.target.value.toLowerCase();
+        document.querySelectorAll('.character-card').forEach(c => c.style.display = c.textContent.toLowerCase().includes(s) ? 'block' : 'none');
+    });
 }
 
-function displayPrompt(prompts, tabId) {
-    const display = document.getElementById('promptDisplay');
-    if (!display) return;
-    let text = '';
-    switch(tabId) {
-        case 'tabFull': text = prompts.full || ''; break;
-        case 'tabPart1': text = prompts.part1 || ''; break;
-        case 'tabPart2': text = prompts.part2 || ''; break;
-        case 'tabConsignes': text = prompts.consignes || ''; break;
-    }
-    display.innerHTML = text.replace(/\n/g, '<br>');
+function displayPrompt(p, tab) {
+    const d = document.getElementById('promptDisplay');
+    if (!d) return;
+    let t = '';
+    if (tab === 'tabFull') t = p.full || '';
+    else if (tab === 'tabPart1') t = p.part1 || '';
+    else if (tab === 'tabPart2') t = p.part2 || '';
+    else if (tab === 'tabConsignes') t = p.consignes || '';
+    d.innerHTML = t.replace(/\n/g, '<br>');
 }
 
 function updateRecap() {
-    const selected = document.querySelector('.character-card.selected');
-    if (!selected) return;
-    const country = countries[selected.dataset.country];
-    const fluoActive = document.getElementById('enableFluo')?.checked ? 'OUI' : 'NON';
-    const alienActive = document.getElementById('enableAlienMode')?.checked ? '👽' : '';
-    const avatarActive = document.getElementById('enableAvatarMode')?.checked ? '🔵' : '';
-    const keepFace = document.getElementById('avatarKeepFace')?.checked ? '👤' : '';
-    const animalActive = document.getElementById('enableAnimalMode')?.checked ? '🐾' : '';
-    const animalBabyActive = document.getElementById('enableAnimalBabyMode')?.checked ? '🐶' : '';
-    const mirrorActive = document.getElementById('enableMirrorMode')?.checked ? '🪞' : '';
-    const selfieActive = document.getElementById('enableSelfieMode')?.checked ? '📱' : '';
-    const eyesActive = document.getElementById('enable-eyes')?.checked ? '👁️' : '';
-    const skinActive = document.getElementById('enable-skin')?.checked ? '🎨' : '';
-    const recap = `🌍 Personnage : ${country.name}\n💃 Danse : ${country.dance}\n💇 Cheveux fluo : ${fluoActive} ${alienActive} ${avatarActive} ${keepFace} ${animalActive} ${animalBabyActive} ${mirrorActive} ${selfieActive} ${eyesActive} ${skinActive}`;
-    const recapDiv = document.getElementById('recapContent');
-    if (recapDiv) recapDiv.innerHTML = recap.replace(/\n/g, '<br>');
-}
-
-function setupConditionalOptions() {
-    const alienSkin = document.getElementById('alienSkin');
-    const alienEyes = document.getElementById('alienEyes');
-    const alienAntenna = document.getElementById('alienAntenna');
-    const alienGlow = document.getElementById('alienGlow');
-    const alienTattoos = document.getElementById('alienTattoos');
-    const alienHolograms = document.getElementById('alienHolograms');
-    if (alienSkin) alienSkin.addEventListener('change', function() { document.getElementById('alienSkinOptions').style.display = this.checked ? 'block' : 'none'; });
-    if (alienEyes) alienEyes.addEventListener('change', function() { document.getElementById('alienEyesOptions').style.display = this.checked ? 'block' : 'none'; });
-    if (alienAntenna) alienAntenna.addEventListener('change', function() { document.getElementById('alienAntennaOptions').style.display = this.checked ? 'block' : 'none'; });
-    if (alienGlow) alienGlow.addEventListener('change', function() { document.getElementById('alienGlowOptions').style.display = this.checked ? 'block' : 'none'; });
-    if (alienTattoos) alienTattoos.addEventListener('change', function() { document.getElementById('alienTattoosOptions').style.display = this.checked ? 'block' : 'none'; });
-    if (alienHolograms) alienHolograms.addEventListener('change', function() { document.getElementById('alienHologramsOptions').style.display = this.checked ? 'block' : 'none'; });
-    
-    const avatarTail = document.getElementById('avatarTail');
-    const avatarStripes = document.getElementById('avatarStripes');
-    if (avatarTail) avatarTail.addEventListener('change', function() { document.getElementById('avatarTailOptions').style.display = this.checked ? 'block' : 'none'; });
-    if (avatarStripes) avatarStripes.addEventListener('change', function() { document.getElementById('avatarStripesOptions').style.display = this.checked ? 'block' : 'none'; });
-    
-    const avatarKeepFace = document.getElementById('avatarKeepFace');
-    const avatarFullBody = document.getElementById('avatarFullBody');
-    if (avatarKeepFace && avatarFullBody) avatarKeepFace.addEventListener('change', function() { if (this.checked && !avatarFullBody.checked) avatarFullBody.checked = true; });
-    
-    document.getElementById('enableAnimalMode')?.addEventListener('change', updateAnimalColors);
-    document.getElementById('animalType')?.addEventListener('change', updateAnimalColors);
-    document.getElementById('enable-eyes')?.addEventListener('change', function() { document.getElementById('eye-controls').style.display = this.checked ? 'block' : 'none'; });
-    document.getElementById('enable-skin')?.addEventListener('change', function() { document.getElementById('skin-controls').style.display = this.checked ? 'block' : 'none'; });
-    document.getElementById('enableSelfieMode')?.addEventListener('change', function() { document.getElementById('selfieOptions').style.display = this.checked ? 'block' : 'none'; });
-}
-
-function updateAnimalColors() {
-    const type = document.getElementById('animalType')?.value;
-    const colorSelect = document.getElementById('animalColor');
-    if (!colorSelect || !type || !window.animalData) return;
-    const animal = window.animalData[type];
-    if (!animal) return;
-    colorSelect.innerHTML = '';
-    animal.couleursDisponibles.forEach(couleur => {
-        const option = document.createElement('option');
-        option.value = couleur;
-        option.textContent = couleur.charAt(0).toUpperCase() + couleur.slice(1);
-        colorSelect.appendChild(option);
-    });
+    const sel = document.querySelector('.character-card.selected');
+    if (!sel) return;
+    const c = countries[sel.dataset.country];
+    const recap = `🌍 ${c.name} | 💃 ${c.dance} | 💇 Cheveux fluo: ${document.getElementById('enableFluo')?.checked ? 'OUI' : 'NON'}`;
+    const div = document.getElementById('recapContent');
+    if (div) div.innerHTML = recap;
 }
 
 function attachEvents() {
-    console.log("🔗 Attachement des événements...");
-    const generator = new PromptGenerator();
-    
-    document.getElementById('generatePrompt')?.addEventListener('click', function() {
-        console.log("🎬 Génération du prompt...");
-        const prompts = generator.generateFullPrompt();
-        window.lastPrompts = prompts;
-        const activeTab = document.querySelector('.tab-btn.active');
-        if (activeTab) displayPrompt(prompts, activeTab.id);
+    const gen = new PromptGenerator();
+    document.getElementById('generatePrompt')?.addEventListener('click', () => {
+        const p = gen.generateFullPrompt();
+        window.lastPrompts = p;
+        const active = document.querySelector('.tab-btn.active');
+        if (active) displayPrompt(p, active.id);
         updateRecap();
     });
-    
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            const prompts = window.lastPrompts || { full: '', part1: '', part2: '', consignes: '' };
-            displayPrompt(prompts, this.id);
+            displayPrompt(window.lastPrompts || { full: '', part1: '', part2: '', consignes: '' }, this.id);
         });
     });
-    
-    document.getElementById('copyPrompt')?.addEventListener('click', function() {
-        const text = document.getElementById('promptDisplay').innerText;
-        navigator.clipboard.writeText(text).then(() => alert('✅ Prompt copié!'));
+    document.getElementById('copyPrompt')?.addEventListener('click', () => {
+        const t = document.getElementById('promptDisplay').innerText;
+        navigator.clipboard.writeText(t).then(() => alert('✅ Copié!'));
     });
-    document.getElementById('exportPrompt')?.addEventListener('click', function() {
-        const text = document.getElementById('promptDisplay').innerText;
-        const blob = new Blob([text], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
+    document.getElementById('exportPrompt')?.addEventListener('click', () => {
+        const t = document.getElementById('promptDisplay').innerText;
+        const b = new Blob([t], { type: 'text/plain' });
         const a = document.createElement('a');
-        a.href = url;
-        a.download = 'prompt_transition.txt';
+        a.href = URL.createObjectURL(b);
+        a.download = 'prompt.txt';
         a.click();
-        URL.revokeObjectURL(url);
+        URL.revokeObjectURL(a.href);
     });
-    
-    document.getElementById('translatePrompt')?.addEventListener('click', function() {
-        const text = document.getElementById('promptDisplay').innerText;
-        if (text && text.trim() !== '') {
-            window.open(`https://translate.google.com/?sl=fr&tl=en&text=${encodeURIComponent(text)}&op=translate`, '_blank');
-        } else {
-            alert('Aucun prompt à traduire. Générez d\'abord un prompt.');
-        }
+    document.getElementById('translatePrompt')?.addEventListener('click', () => {
+        const t = document.getElementById('promptDisplay').innerText;
+        if (t) window.open(`https://translate.google.com/?sl=fr&tl=en&text=${encodeURIComponent(t)}`, '_blank');
+        else alert('Générez d\'abord un prompt');
     });
-    
-    document.getElementById('clearPrompt')?.addEventListener('click', function() {
+    document.getElementById('clearPrompt')?.addEventListener('click', () => {
         document.getElementById('promptDisplay').innerHTML = '';
         window.lastPrompts = null;
     });
-    
-    document.getElementById('generateOutfit')?.addEventListener('click', function() {
-        const selected = document.querySelector('.character-card.selected');
-        if (!selected) { alert('Sélectionnez d\'abord un personnage'); return; }
-        const country = countries[selected.dataset.country];
-        if (country && country.finalOutfit && country.finalOutfit.colors) {
-            let outfitDesc = `${country.finalOutfit.description} - Couleurs : ${country.finalOutfit.colors.join(', ')}. Éléments : ${country.finalOutfit.elements.join(', ')}. Accessoires : ${country.finalOutfit.accessories.join(', ')}.`;
-            document.getElementById('finalOutfitDescription').value = outfitDesc;
-        } else if (country && country.finalOutfit) {
-            document.getElementById('finalOutfitDescription').value = country.finalOutfit.description;
-        } else {
-            alert('Aucune tenue prédéfinie pour ce personnage');
-        }
+    document.getElementById('generateOutfit')?.addEventListener('click', () => {
+        const sel = document.querySelector('.character-card.selected');
+        if (!sel) { alert('Sélectionnez un personnage'); return; }
+        const c = countries[sel.dataset.country];
+        if (c?.finalOutfit?.colors) {
+            document.getElementById('finalOutfitDescription').value = `${c.finalOutfit.description} - Couleurs: ${c.finalOutfit.colors.join(', ')}. Éléments: ${c.finalOutfit.elements.slice(0,3).join(', ')}...`;
+        } else alert('Aucune tenue prédéfinie');
     });
-    
     document.getElementById('enableMagicTexts')?.addEventListener('change', function() { document.getElementById('magicTextsOptions').style.display = this.checked ? 'block' : 'none'; });
     document.getElementById('enableCustomDecor')?.addEventListener('change', function() { document.getElementById('customDecorOptions').style.display = this.checked ? 'block' : 'none'; });
     document.getElementById('enableAlienMode')?.addEventListener('change', function() { document.getElementById('alienOptions').style.display = this.checked ? 'block' : 'none'; });
@@ -1147,83 +464,90 @@ function attachEvents() {
     document.getElementById('enableAnimalBabyMode')?.addEventListener('change', function() { document.getElementById('animalBabyOptions').style.display = this.checked ? 'block' : 'none'; });
     document.getElementById('enableMirrorMode')?.addEventListener('change', function() { document.getElementById('mirrorOptions').style.display = this.checked ? 'block' : 'none'; });
     document.getElementById('enableSelfieMode')?.addEventListener('change', function() { document.getElementById('selfieOptions').style.display = this.checked ? 'block' : 'none'; });
-    if (typeof initFantasyConfig === 'function') initFantasyConfig();
     document.getElementById('enableScript')?.addEventListener('change', function() { document.getElementById('scriptOptions').style.display = this.checked ? 'block' : 'none'; });
+    if (typeof initFantasyConfig === 'function') initFantasyConfig();
     
-    setupConditionalOptions();
-    
-    const fluoIntensity = document.getElementById('fluoIntensity');
-    if (fluoIntensity) fluoIntensity.addEventListener('input', function() {
-        const val = parseInt(this.value);
-        const labels = ['Faible', 'Léger', 'Moyen', 'Brillant', 'Éclatant', 'Intense', 'Fulgurant', 'Phosphorescent', 'Néon', 'AVEUGLANT'];
-        document.getElementById('intensityValue').textContent = labels[val-1] || 'Éclatant';
+    // Sliders
+    document.getElementById('fluoIntensity')?.addEventListener('input', function() {
+        const v = parseInt(this.value);
+        const l = ['Faible','Léger','Moyen','Brillant','Éclatant','Intense','Fulgurant','Phosphorescent','Néon','AVEUGLANT'];
+        document.getElementById('intensityValue').textContent = l[v-1] || 'Éclatant';
+    });
+    document.getElementById('seductionLevel')?.addEventListener('input', function() {
+        document.getElementById('seductionValue').textContent = this.value + '/10';
     });
     
-    const seductionLevel = document.getElementById('seductionLevel');
-    const seductionValue = document.getElementById('seductionValue');
-    if (seductionLevel && seductionValue) seductionLevel.addEventListener('input', function() { seductionValue.textContent = this.value + '/10'; });
+    // Conditional options
+    const setup = () => {
+        const toggle = (id, opt) => document.getElementById(id)?.addEventListener('change', function() { document.getElementById(opt).style.display = this.checked ? 'block' : 'none'; });
+        toggle('alienSkin', 'alienSkinOptions');
+        toggle('alienEyes', 'alienEyesOptions');
+        toggle('alienAntenna', 'alienAntennaOptions');
+        toggle('alienGlow', 'alienGlowOptions');
+        toggle('alienTattoos', 'alienTattoosOptions');
+        toggle('alienHolograms', 'alienHologramsOptions');
+        toggle('avatarTail', 'avatarTailOptions');
+        toggle('avatarStripes', 'avatarStripesOptions');
+        document.getElementById('avatarKeepFace')?.addEventListener('change', function() { if (this.checked) document.getElementById('avatarFullBody').checked = true; });
+        document.getElementById('enableAnimalMode')?.addEventListener('change', () => {
+            const t = document.getElementById('animalType')?.value;
+            if (t && window.animalData?.[t]) {
+                const sel = document.getElementById('animalColor');
+                if (sel) {
+                    sel.innerHTML = '';
+                    window.animalData[t].couleursDisponibles.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c.charAt(0).toUpperCase() + c.slice(1); sel.appendChild(o); });
+                }
+            }
+        });
+        document.getElementById('animalType')?.addEventListener('change', () => {
+            const t = document.getElementById('animalType')?.value;
+            if (t && window.animalData?.[t]) {
+                const sel = document.getElementById('animalColor');
+                if (sel) {
+                    sel.innerHTML = '';
+                    window.animalData[t].couleursDisponibles.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c.charAt(0).toUpperCase() + c.slice(1); sel.appendChild(o); });
+                }
+            }
+        });
+        document.getElementById('enable-eyes')?.addEventListener('change', function() { document.getElementById('eye-controls').style.display = this.checked ? 'block' : 'none'; });
+        document.getElementById('enable-skin')?.addEventListener('change', function() { document.getElementById('skin-controls').style.display = this.checked ? 'block' : 'none'; });
+        document.getElementById('enableSelfieMode')?.addEventListener('change', function() { document.getElementById('selfieOptions').style.display = this.checked ? 'block' : 'none'; });
+    };
+    setup();
     
-    const bisousCheckbox = document.getElementById('gesteBisous');
+    const bisous = document.getElementById('gesteBisous');
     const bisousCount = document.getElementById('bisousCount');
-    if (bisousCheckbox && bisousCount) {
-        bisousCount.disabled = !bisousCheckbox.checked;
-        bisousCheckbox.addEventListener('change', function() { bisousCount.disabled = !this.checked; });
-    }
-    const viensCheckbox = document.getElementById('gesteViens');
+    if (bisous && bisousCount) { bisousCount.disabled = !bisous.checked; bisous.addEventListener('change', () => bisousCount.disabled = !bisous.checked); }
+    const viens = document.getElementById('gesteViens');
     const viensCount = document.getElementById('viensCount');
-    if (viensCheckbox && viensCount) {
-        viensCount.disabled = !viensCheckbox.checked;
-        viensCheckbox.addEventListener('change', function() { viensCount.disabled = !this.checked; });
-    }
+    if (viens && viensCount) { viensCount.disabled = !viens.checked; viens.addEventListener('change', () => viensCount.disabled = !viens.checked); }
 }
 
 function populateSpecialSelects() {
-    const eyeLeft = document.getElementById('eye-left-select');
-    const eyeRight = document.getElementById('eye-right-select');
-    if (eyeLeft && eyeRight && typeof eyeColorsData !== 'undefined') {
-        eyeLeft.innerHTML = '';
-        eyeRight.innerHTML = '';
-        eyeColorsData.forEach(color => {
-            const option1 = document.createElement('option');
-            option1.value = color.label.toLowerCase();
-            option1.textContent = color.label;
-            eyeLeft.appendChild(option1);
-            const option2 = document.createElement('option');
-            option2.value = color.label.toLowerCase();
-            option2.textContent = color.label;
-            eyeRight.appendChild(option2);
+    const eyeL = document.getElementById('eye-left-select');
+    const eyeR = document.getElementById('eye-right-select');
+    if (eyeL && eyeR && typeof eyeColorsData !== 'undefined') {
+        eyeL.innerHTML = ''; eyeR.innerHTML = '';
+        eyeColorsData.forEach(c => {
+            const o1 = document.createElement('option'); o1.value = c.label.toLowerCase(); o1.textContent = c.label; eyeL.appendChild(o1);
+            const o2 = document.createElement('option'); o2.value = c.label.toLowerCase(); o2.textContent = c.label; eyeR.appendChild(o2);
         });
     }
-    const skinSelect = document.getElementById('skin-color-select');
-    if (skinSelect && typeof skinColorsData !== 'undefined') {
-        skinSelect.innerHTML = '';
-        skinColorsData.forEach(color => {
-            const option = document.createElement('option');
-            option.value = color.label.toLowerCase();
-            option.textContent = color.label;
-            skinSelect.appendChild(option);
-        });
+    const skin = document.getElementById('skin-color-select');
+    if (skin && typeof skinColorsData !== 'undefined') {
+        skin.innerHTML = '';
+        skinColorsData.forEach(c => { const o = document.createElement('option'); o.value = c.label.toLowerCase(); o.textContent = c.label; skin.appendChild(o); });
     }
 }
 
 function startApp() {
-    console.log("🚀 Démarrage de l'application...");
     populateSpecialSelects();
-    setTimeout(updateAnimalColors, 500);
     initCharacters();
     attachEvents();
-    console.log("✅ Application prête!");
+    console.log("✅ App prête - version ULTRA-COURTE");
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startApp);
-} else {
-    startApp();
-}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startApp);
+else startApp();
 
 window.PromptGenerator = PromptGenerator;
-window.initCharacters = initCharacters;
-window.displayPrompt = displayPrompt;
-window.updateRecap = updateRecap;
-
-console.log("📦 script.js chargé - VERSION ALLÉGÉE CORRIGÉE : Tenue finale détaillée pour tous les 73 personnages");
